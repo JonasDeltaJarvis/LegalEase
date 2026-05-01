@@ -1,519 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LegalEase, Legal language, finally human.</title>
-    <link rel="stylesheet" href="styles.css" />
-    <!-- PDF.js for reading uploaded PDFs -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <!-- jsPDF for generating downloadable PDF reports -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  </head>
-  <body>
-    <!-- NAV -->
-    <nav>
-      <div class="container">
-        <div class="nav-inner">
-          <a class="logo" href="#" onclick="resetAll(); return false;"
-            >Legal<span>Ease</span></a
-          >
-          <span class="nav-tag">AI-powered · Not legal advice</span>
-        </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LegalEase — Legal language, finally human.</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- PDF.js for reading uploaded PDFs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- jsPDF for generating downloadable PDF reports -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a class="logo" href="#" onclick="resetAll(); return false;">Legal<span>Ease</span></a>
+      <div style="display:flex;align-items:center;gap:12px">
+        <a href="database.html" style="font-size:12px;font-weight:500;color:rgba(247,242,234,0.6);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#E6A44E'" onmouseout="this.style.color='rgba(247,242,234,0.6)'">Browse database →</a>
+        <span class="nav-tag">AI-powered · Not legal advice</span>
       </div>
-    </nav>
+    </div>
+  </div>
+</nav>
 
-    <!-- HERO -->
-    <section id="heroSection" class="hero">
-      <div class="hero-glow"></div>
-      <div class="hero-lines"></div>
-      <div class="container hero-content">
-        <p class="hero-eyebrow">
-          <span class="eyebrow-line"></span>Terms &amp; Conditions Translator
-        </p>
-        <h1>
-          You clicked <em>"I agree."</em><br />But did you actually Agree?
-        </h1>
-        <p class="hero-sub">
-          Paste or upload any T&amp;C. Get a risk score, key points, and an
-          illustrated clause breakdown in seconds.
-        </p>
+<!-- HERO -->
+<section id="heroSection" class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-lines"></div>
+  <div class="container hero-content">
+    <p class="hero-eyebrow"><span class="eyebrow-line"></span>Terms &amp; Conditions Translator</p>
+    <h1>You clicked <em>"I agree."</em><br>But did you actually?</h1>
+    <p class="hero-sub">Paste or upload any T&amp;C. Get a risk score, key points, and an illustrated clause breakdown in seconds.</p>
 
-        <div class="input-card">
-          <div class="input-top">
-            <span class="input-label"
-              >Paste or upload terms &amp; conditions</span
-            >
-          </div>
-          <textarea
-            id="tcInput"
-            placeholder="Paste the full terms and conditions text here...&#10;&#10;Or upload a PDF using the button below."
-          ></textarea>
-
-          <div class="upload-row">
-            <label class="upload-btn">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path
-                  d="M7 2v7M4 5l3-3 3 3"
-                  stroke="currentColor"
-                  stroke-width="1.4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <rect
-                  x="2"
-                  y="9"
-                  width="10"
-                  height="3"
-                  rx="1"
-                  stroke="currentColor"
-                  stroke-width="1.2"
-                />
-              </svg>
-              Upload PDF
-              <input
-                type="file"
-                id="pdfUpload"
-                accept=".pdf"
-                onchange="handlePDF(this)"
-              />
-            </label>
-            <span class="upload-filename" id="uploadFilename"
-              >No file chosen</span
-            >
-          </div>
-
-          <div class="input-actions">
-            <button class="btn-analyse" id="analyseBtn" onclick="analyse()">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <circle
-                  cx="6"
-                  cy="6"
-                  r="4.5"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                />
-                <path
-                  d="M9.5 9.5l3 3"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-              </svg>
-              Analyse these terms
-            </button>
-            <button class="btn-clear" onclick="resetAll()">Clear</button>
-            <button class="btn-sample" onclick="loadSample()">
-              Try a sample →
-            </button>
-          </div>
-        </div>
+    <div class="input-card">
+      <div class="input-top">
+        <span class="input-label">Paste or upload terms &amp; conditions</span>
       </div>
-    </section>
+      <textarea id="tcInput" placeholder="Paste the full terms and conditions text here...&#10;&#10;Or upload a PDF using the button below."></textarea>
 
-    <!-- HOW IT WORKS -->
-    <section class="how">
-      <div class="container">
-        <p class="section-eyebrow">How it works</p>
-        <h2 class="section-title">Three steps to clarity</h2>
-        <div class="steps">
-          <div class="step">
-            <div class="step-num">01</div>
-            <div class="step-title">Paste or upload</div>
-            <p class="step-sub">
-              Copy any T&amp;C text or upload the PDF directly.
-            </p>
-          </div>
-          <div class="step">
-            <div class="step-num">02</div>
-            <div class="step-title">AI reads it</div>
-            <p class="step-sub">
-              Every clause gets read, scored, and translated into plain English.
-            </p>
-          </div>
-          <div class="step">
-            <div class="step-num">03</div>
-            <div class="step-title">Understand &amp; download</div>
-            <p class="step-sub">
-              Get a risk score, clause cards, and a downloadable PDF report.
-            </p>
-          </div>
-        </div>
+      <div class="upload-row">
+        <label class="upload-btn">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4 5l3-3 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="9" width="10" height="3" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+          Upload PDF
+          <input type="file" id="pdfUpload" accept=".pdf" onchange="handlePDF(this)">
+        </label>
+        <span class="upload-filename" id="uploadFilename">No file chosen</span>
       </div>
-    </section>
 
-    <!-- LOADING -->
-    <div class="container">
-      <div class="loading-state" id="loadingState">
-        <div class="spinner-wrap">
-          <div class="spinner-ring"></div>
-          <div class="spinner-dot"></div>
-        </div>
-        <p class="loading-title">Reading the fine print…</p>
-        <p class="loading-sub">Analysing clauses and scoring risk.</p>
+      <div class="input-actions">
+        <button class="btn-analyse" id="analyseBtn" onclick="analyse()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M9.5 9.5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Analyse these terms
+        </button>
+        <button class="btn-clear" onclick="resetAll()">Clear</button>
+        <button class="btn-sample" onclick="loadSample()">Try a sample →</button>
       </div>
-      <div class="error-box" id="errorBox"></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="container">
+    <p class="section-eyebrow">How it works</p>
+    <h2 class="section-title">Three steps to clarity</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Paste or upload</div>
+        <p class="step-sub">Copy any T&amp;C text or upload the PDF directly.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">AI reads it</div>
+        <p class="step-sub">Every clause gets read, scored, and translated into plain English.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Understand &amp; download</div>
+        <p class="step-sub">Get a risk score, clause cards, and a downloadable PDF report.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOADING -->
+<div class="container">
+  <div class="loading-state" id="loadingState">
+    <div class="spinner-wrap">
+      <div class="spinner-ring"></div>
+      <div class="spinner-dot"></div>
+    </div>
+    <p class="loading-title">Reading the fine print…</p>
+    <p class="loading-sub">Analysing clauses and scoring risk.</p>
+  </div>
+  <div class="error-box" id="errorBox"></div>
+</div>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="container">
+
+    <div class="results-topbar">
+      <h2 class="results-title">Your analysis</h2>
+      <div class="topbar-right">
+        <button class="btn-download" onclick="downloadPDF()" id="downloadBtn">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 2v6M4 6l2.5 2.5L9 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="1.5" y="9.5" width="10" height="2" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+          Download PDF
+        </button>
+        <button class="btn-back" onclick="resetAll()">← New analysis</button>
+      </div>
     </div>
 
-    <!-- RESULTS -->
-    <section id="results">
-      <div class="container">
-        <div class="results-topbar">
-          <h2 class="results-title">Your analysis</h2>
-          <div class="topbar-right">
-            <button
-              class="btn-download"
-              onclick="downloadPDF()"
-              id="downloadBtn"
-            >
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <path
-                  d="M6.5 2v6M4 6l2.5 2.5L9 6"
-                  stroke="currentColor"
-                  stroke-width="1.4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <rect
-                  x="1.5"
-                  y="9.5"
-                  width="10"
-                  height="2"
-                  rx="1"
-                  stroke="currentColor"
-                  stroke-width="1.2"
-                />
-              </svg>
-              Download PDF
-            </button>
-            <button class="btn-back" onclick="resetAll()">
-              ← New analysis
-            </button>
-          </div>
-        </div>
+    <div class="disclaimer">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;margin-top:2px"><circle cx="6" cy="6" r="5" stroke="#94A3B8" stroke-width="1.2"/><line x1="6" y1="4" x2="6" y2="6.5" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/><circle cx="6" cy="8.5" r="0.5" fill="#94A3B8"/></svg>
+      <span><strong>Not legal advice.</strong> AI summaries may miss nuances. For important contracts, consult a qualified lawyer.</span>
+    </div>
 
-        <div class="disclaimer">
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            fill="none"
-            style="flex-shrink: 0; margin-top: 2px"
-          >
-            <circle cx="6" cy="6" r="5" stroke="#94A3B8" stroke-width="1.2" />
-            <line
-              x1="6"
-              y1="4"
-              x2="6"
-              y2="6.5"
-              stroke="#94A3B8"
-              stroke-width="1.2"
-              stroke-linecap="round"
-            />
-            <circle cx="6" cy="8.5" r="0.5" fill="#94A3B8" />
-          </svg>
-          <span
-            ><strong>Not legal advice.</strong> AI summaries may miss nuances.
-            For important contracts, consult a qualified lawyer.</span
-          >
+    <!-- Lawyer + Risk card side by side -->
+    <div class="lawyer-row" id="lawyerRow">
+      <div class="lawyer-wrap">
+        <div class="lawyer-bubble" id="lawyerBubble">
+          <div class="lawyer-bubble-inner" id="lawyerMsg">Looks good to me!</div>
+          <div class="lawyer-bubble-sub" id="lawyerSub">Standard terms, nothing unusual.</div>
         </div>
-
-        <!-- Lawyer + Risk card side by side -->
-        <div class="lawyer-row" id="lawyerRow">
-          <div class="lawyer-wrap">
-            <div class="lawyer-bubble" id="lawyerBubble">
-              <div class="lawyer-bubble-inner" id="lawyerMsg">
-                Looks good to me!
-              </div>
-              <div class="lawyer-bubble-sub" id="lawyerSub">
-                Standard terms, nothing unusual.
-              </div>
-            </div>
-            <svg
-              class="lawyer-svg"
-              id="lawyerSvg"
-              viewBox="0 0 80 120"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <!-- Body / robe -->
-              <rect
-                x="18"
-                y="60"
-                width="44"
-                height="52"
-                rx="8"
-                fill="#1C2E47"
-              />
-              <!-- Collar -->
-              <path d="M32 60 L40 72 L48 60" fill="#F7F2EA" />
-              <!-- Lapels -->
-              <path d="M32 60 L24 80 L40 72Z" fill="#263D57" />
-              <path d="M48 60 L56 80 L40 72Z" fill="#263D57" />
-              <!-- White shirt -->
-              <rect x="36" y="60" width="8" height="14" rx="2" fill="#F7F2EA" />
-              <!-- Arms -->
-              <rect x="8" y="62" width="12" height="36" rx="6" fill="#1C2E47" />
-              <rect
-                x="60"
-                y="62"
-                width="12"
-                height="36"
-                rx="6"
-                fill="#1C2E47"
-              />
-              <!-- Hands -->
-              <circle cx="14" cy="100" r="6" fill="#F5D0A9" />
-              <circle cx="66" cy="100" r="6" fill="#F5D0A9" />
-              <!-- Neck -->
-              <rect
-                x="33"
-                y="46"
-                width="14"
-                height="16"
-                rx="4"
-                fill="#F5D0A9"
-              />
-              <!-- Head -->
-              <ellipse cx="40" cy="34" rx="20" ry="22" fill="#F5D0A9" />
-              <!-- Hair -->
-              <ellipse cx="40" cy="14" rx="20" ry="10" fill="#3D2B1F" />
-              <rect x="20" y="14" width="40" height="10" fill="#3D2B1F" />
-              <!-- Glasses -->
-              <circle
-                cx="33"
-                cy="34"
-                r="7"
-                stroke="#3D2B1F"
-                stroke-width="1.5"
-                fill="rgba(200,220,255,0.3)"
-              />
-              <circle
-                cx="47"
-                cy="34"
-                r="7"
-                stroke="#3D2B1F"
-                stroke-width="1.5"
-                fill="rgba(200,220,255,0.3)"
-              />
-              <line
-                x1="40"
-                y1="34"
-                x2="40"
-                y2="34"
-                stroke="#3D2B1F"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-              <line
-                x1="26"
-                y1="34"
-                x2="22"
-                y2="32"
-                stroke="#3D2B1F"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-              <line
-                x1="54"
-                y1="34"
-                x2="58"
-                y2="32"
-                stroke="#3D2B1F"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-              <!-- Face — neutral, replaced by JS -->
-              <g id="lawyerFace">
-                <path
-                  d="M34 40 Q40 44 46 40"
-                  stroke="#3D2B1F"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  fill="none"
-                />
-                <circle cx="33" cy="33" r="1.5" fill="#3D2B1F" />
-                <circle cx="47" cy="33" r="1.5" fill="#3D2B1F" />
-              </g>
-              <!-- Briefcase -->
-              <rect
-                x="22"
-                y="96"
-                width="20"
-                height="14"
-                rx="3"
-                fill="#C9893A"
-              />
-              <rect
-                x="28"
-                y="93"
-                width="8"
-                height="5"
-                rx="2"
-                stroke="#C9893A"
-                stroke-width="1.5"
-                fill="none"
-              />
-              <line
-                x1="22"
-                y1="103"
-                x2="42"
-                y2="103"
-                stroke="#A06820"
-                stroke-width="1"
-              />
-            </svg>
-          </div>
-          <div id="riskCard" style="flex: 1"></div>
-        </div>
-
-        <!-- Key points -->
-        <div class="key-points-wrap">
-          <div class="kp-head">
-            <div class="kp-head-icon">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <circle
-                  cx="6"
-                  cy="6"
-                  r="4.5"
-                  stroke="white"
-                  stroke-width="1.2"
-                />
-                <line
-                  x1="6"
-                  y1="3.5"
-                  x2="6"
-                  y2="6.5"
-                  stroke="white"
-                  stroke-width="1.2"
-                  stroke-linecap="round"
-                />
-                <circle cx="6" cy="8.5" r="0.5" fill="white" />
-              </svg>
-            </div>
-            5 things to know
-          </div>
-          <div class="kp-list" id="keyPoints"></div>
-        </div>
-
-        <!-- Clause cards -->
-        <div class="clause-label">Clause breakdown</div>
-        <div class="clause-grid" id="clauseGrid"></div>
+        <svg class="lawyer-svg" id="lawyerSvg" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Body / robe -->
+          <rect x="18" y="60" width="44" height="52" rx="8" fill="#1C2E47"/>
+          <!-- Collar -->
+          <path d="M32 60 L40 72 L48 60" fill="#F7F2EA"/>
+          <!-- Lapels -->
+          <path d="M32 60 L24 80 L40 72Z" fill="#263D57"/>
+          <path d="M48 60 L56 80 L40 72Z" fill="#263D57"/>
+          <!-- White shirt -->
+          <rect x="36" y="60" width="8" height="14" rx="2" fill="#F7F2EA"/>
+          <!-- Arms -->
+          <rect x="8" y="62" width="12" height="36" rx="6" fill="#1C2E47"/>
+          <rect x="60" y="62" width="12" height="36" rx="6" fill="#1C2E47"/>
+          <!-- Hands -->
+          <circle cx="14" cy="100" r="6" fill="#F5D0A9"/>
+          <circle cx="66" cy="100" r="6" fill="#F5D0A9"/>
+          <!-- Neck -->
+          <rect x="33" y="46" width="14" height="16" rx="4" fill="#F5D0A9"/>
+          <!-- Head -->
+          <ellipse cx="40" cy="34" rx="20" ry="22" fill="#F5D0A9"/>
+          <!-- Hair -->
+          <ellipse cx="40" cy="14" rx="20" ry="10" fill="#3D2B1F"/>
+          <rect x="20" y="14" width="40" height="10" fill="#3D2B1F"/>
+          <!-- Glasses -->
+          <circle cx="33" cy="34" r="7" stroke="#3D2B1F" stroke-width="1.5" fill="rgba(200,220,255,0.3)"/>
+          <circle cx="47" cy="34" r="7" stroke="#3D2B1F" stroke-width="1.5" fill="rgba(200,220,255,0.3)"/>
+          <line x1="40" y1="34" x2="40" y2="34" stroke="#3D2B1F" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="26" y1="34" x2="22" y2="32" stroke="#3D2B1F" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="54" y1="34" x2="58" y2="32" stroke="#3D2B1F" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Face — neutral, replaced by JS -->
+          <g id="lawyerFace">
+            <path d="M34 40 Q40 44 46 40" stroke="#3D2B1F" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <circle cx="33" cy="33" r="1.5" fill="#3D2B1F"/>
+            <circle cx="47" cy="33" r="1.5" fill="#3D2B1F"/>
+          </g>
+          <!-- Briefcase -->
+          <rect x="22" y="96" width="20" height="14" rx="3" fill="#C9893A"/>
+          <rect x="28" y="93" width="8" height="5" rx="2" stroke="#C9893A" stroke-width="1.5" fill="none"/>
+          <line x1="22" y1="103" x2="42" y2="103" stroke="#A06820" stroke-width="1"/>
+        </svg>
       </div>
-    </section>
+      <div id="riskCard" style="flex:1"></div>
+    </div>
 
-    <!-- FOOTER -->
-    <footer>
-      <div class="container">
-        <div class="footer-inner">
-          <div class="footer-logo">Legal<span>Ease</span></div>
-          <p class="footer-note">
-            Informational use only · Not legal advice · Powered by Groq AI
-          </p>
+    <!-- Key points -->
+    <div class="key-points-wrap">
+      <div class="kp-head">
+        <div class="kp-head-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="white" stroke-width="1.2"/><line x1="6" y1="3.5" x2="6" y2="6.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/><circle cx="6" cy="8.5" r="0.5" fill="white"/></svg>
         </div>
+        5 things to know
       </div>
-    </footer>
+      <div class="kp-list" id="keyPoints"></div>
+    </div>
 
-    <script>
-      /* ════════════════════════════════════
+    <!-- Clause cards -->
+    <div class="clause-label">Clause breakdown</div>
+    <div class="clause-grid" id="clauseGrid"></div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">Legal<span>Ease</span></div>
+      <p class="footer-note">Informational use only · Not legal advice · Powered by Groq AI</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════
    LEGALEASE v3 — JavaScript
    Free Groq key: console.groq.com
 ════════════════════════════════════ */
-      const API_KEY =
-        "Enter_Groq_API_Key_Here";
+const API_KEY = 'YOUR_GROQ_API_KEY_HERE';
 
-      /* PDF.js worker */
-      if (typeof pdfjsLib !== "undefined") {
-        pdfjsLib.GlobalWorkerOptions.workerSrc =
-          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-      }
+/* PDF.js worker */
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
 
-      /* ── Clause icons ── */
-      const ICONS = {
-        data: `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="16" fill="#E1F5EE"/><ellipse cx="24" cy="24" rx="7" ry="11" stroke="#0F6E56" stroke-width="1.5"/><line x1="24" y1="13" x2="24" y2="35" stroke="#0F6E56" stroke-width="1.5"/><line x1="13" y1="24" x2="35" y2="24" stroke="#0F6E56" stroke-width="1.5"/><ellipse cx="24" cy="24" rx="14" ry="11" stroke="#0F6E56" stroke-width="1.5"/></svg>`,
-        payment: `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="8" y="14" width="32" height="22" rx="4" fill="#FAEEDA"/><rect x="8" y="19" width="32" height="6" fill="#BA7517"/><rect x="12" y="28" width="8" height="4" rx="1.5" fill="#BA7517"/><rect x="22" y="28" width="5" height="4" rx="1.5" fill="#EFC97A"/></svg>`,
-        termination: `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="12" y="8" width="24" height="32" rx="4" fill="#FCEBEB"/><line x1="18" y1="18" x2="30" y2="18" stroke="#A32D2D" stroke-width="1.5" stroke-linecap="round"/><line x1="18" y1="23" x2="30" y2="23" stroke="#A32D2D" stroke-width="1.5" stroke-linecap="round"/><line x1="18" y1="28" x2="24" y2="28" stroke="#A32D2D" stroke-width="1.5" stroke-linecap="round"/><circle cx="34" cy="36" r="7" fill="#A32D2D"/><line x1="31" y1="36" x2="37" y2="36" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>`,
-        liability: `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><path d="M24 10 L38 17 L38 31 L24 38 L10 31 L10 17 Z" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5"/><circle cx="24" cy="24" r="5" fill="#534AB7"/><line x1="24" y1="15" x2="24" y2="19" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round"/><circle cx="24" cy="28" r="0.8" fill="white"/></svg>`,
-        rights: `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><path d="M16 12 Q24 8 32 12 L36 24 L24 40 L12 24 Z" fill="#E6F1FB" stroke="#185FA5" stroke-width="1.5"/><path d="M19 24 L23 28 L30 20" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-        privacy: `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="12" y="20" width="24" height="18" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/><path d="M17 20V16a7 7 0 0 1 14 0v4" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/><circle cx="24" cy="29" r="3" fill="#0F6E56"/><line x1="24" y1="32" x2="24" y2="35" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/></svg>`,
-        changes: `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="14" fill="#FAEEDA" stroke="#BA7517" stroke-width="1.5"/><path d="M24 16v8l5 5" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 24 a8 8 0 0 1 12-6.9" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round"/></svg>`,
-        disputes: `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="10" y="14" width="28" height="20" rx="4" fill="#EEEDFE"/><path d="M10 22h28" stroke="#534AB7" stroke-width="1.5"/><circle cx="19" cy="18" r="2" fill="#534AB7"/><circle cx="29" cy="18" r="2" fill="#534AB7"/><path d="M17 28 Q24 33 31 28" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>`,
-        general: `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="12" y="10" width="24" height="30" rx="4" fill="#F1EFE8" stroke="#888780" stroke-width="1.5"/><line x1="18" y1="18" x2="30" y2="18" stroke="#888780" stroke-width="1.5" stroke-linecap="round"/><line x1="18" y1="23" x2="30" y2="23" stroke="#888780" stroke-width="1.5" stroke-linecap="round"/><line x1="18" y1="28" x2="26" y2="28" stroke="#888780" stroke-width="1.5" stroke-linecap="round"/></svg>`,
-      };
+/* ── Clause icons ── */
+const ICONS = {
+  data:        `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="16" fill="#E1F5EE"/><ellipse cx="24" cy="24" rx="7" ry="11" stroke="#0F6E56" stroke-width="1.5"/><line x1="24" y1="13" x2="24" y2="35" stroke="#0F6E56" stroke-width="1.5"/><line x1="13" y1="24" x2="35" y2="24" stroke="#0F6E56" stroke-width="1.5"/><ellipse cx="24" cy="24" rx="14" ry="11" stroke="#0F6E56" stroke-width="1.5"/></svg>`,
+  payment:     `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="8" y="14" width="32" height="22" rx="4" fill="#FAEEDA"/><rect x="8" y="19" width="32" height="6" fill="#BA7517"/><rect x="12" y="28" width="8" height="4" rx="1.5" fill="#BA7517"/><rect x="22" y="28" width="5" height="4" rx="1.5" fill="#EFC97A"/></svg>`,
+  termination: `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="12" y="8" width="24" height="32" rx="4" fill="#FCEBEB"/><line x1="18" y1="18" x2="30" y2="18" stroke="#A32D2D" stroke-width="1.5" stroke-linecap="round"/><line x1="18" y1="23" x2="30" y2="23" stroke="#A32D2D" stroke-width="1.5" stroke-linecap="round"/><line x1="18" y1="28" x2="24" y2="28" stroke="#A32D2D" stroke-width="1.5" stroke-linecap="round"/><circle cx="34" cy="36" r="7" fill="#A32D2D"/><line x1="31" y1="36" x2="37" y2="36" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  liability:   `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><path d="M24 10 L38 17 L38 31 L24 38 L10 31 L10 17 Z" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5"/><circle cx="24" cy="24" r="5" fill="#534AB7"/><line x1="24" y1="15" x2="24" y2="19" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round"/><circle cx="24" cy="28" r="0.8" fill="white"/></svg>`,
+  rights:      `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><path d="M16 12 Q24 8 32 12 L36 24 L24 40 L12 24 Z" fill="#E6F1FB" stroke="#185FA5" stroke-width="1.5"/><path d="M19 24 L23 28 L30 20" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  privacy:     `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="12" y="20" width="24" height="18" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/><path d="M17 20V16a7 7 0 0 1 14 0v4" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/><circle cx="24" cy="29" r="3" fill="#0F6E56"/><line x1="24" y1="32" x2="24" y2="35" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  changes:     `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="14" fill="#FAEEDA" stroke="#BA7517" stroke-width="1.5"/><path d="M24 16v8l5 5" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 24 a8 8 0 0 1 12-6.9" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  disputes:    `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="10" y="14" width="28" height="20" rx="4" fill="#EEEDFE"/><path d="M10 22h28" stroke="#534AB7" stroke-width="1.5"/><circle cx="19" cy="18" r="2" fill="#534AB7"/><circle cx="29" cy="18" r="2" fill="#534AB7"/><path d="M17 28 Q24 33 31 28" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>`,
+  general:     `<svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="12" y="10" width="24" height="30" rx="4" fill="#F1EFE8" stroke="#888780" stroke-width="1.5"/><line x1="18" y1="18" x2="30" y2="18" stroke="#888780" stroke-width="1.5" stroke-linecap="round"/><line x1="18" y1="23" x2="30" y2="23" stroke="#888780" stroke-width="1.5" stroke-linecap="round"/><line x1="18" y1="28" x2="26" y2="28" stroke="#888780" stroke-width="1.5" stroke-linecap="round"/></svg>`
+};
 
-      const CARD_ANIMS = [
-        "bounce",
-        "wobble",
-        "pulse-grow",
-        "spin-once",
-        "shake",
-        "tada",
-      ];
+const CARD_ANIMS = ['bounce','wobble','pulse-grow','spin-once','shake','tada'];
 
-      function getIcon(cat) {
-        const c = (cat || "").toLowerCase();
-        if (c.includes("data") || c.includes("collect")) return ICONS.data;
-        if (c.includes("pay") || c.includes("bill") || c.includes("subscri"))
-          return ICONS.payment;
-        if (c.includes("terminat") || c.includes("cancel"))
-          return ICONS.termination;
-        if (c.includes("liabil") || c.includes("warrant"))
-          return ICONS.liability;
-        if (c.includes("right") || c.includes("user")) return ICONS.rights;
-        if (c.includes("privac") || c.includes("personal"))
-          return ICONS.privacy;
-        if (c.includes("chang") || c.includes("modif")) return ICONS.changes;
-        if (c.includes("disput") || c.includes("arbitrat"))
-          return ICONS.disputes;
-        return ICONS.general;
-      }
+function getIcon(cat) {
+  const c = (cat || '').toLowerCase();
+  if (c.includes('data') || c.includes('collect'))                      return ICONS.data;
+  if (c.includes('pay') || c.includes('bill') || c.includes('subscri')) return ICONS.payment;
+  if (c.includes('terminat') || c.includes('cancel'))                   return ICONS.termination;
+  if (c.includes('liabil') || c.includes('warrant'))                    return ICONS.liability;
+  if (c.includes('right') || c.includes('user'))                        return ICONS.rights;
+  if (c.includes('privac') || c.includes('personal'))                   return ICONS.privacy;
+  if (c.includes('chang') || c.includes('modif'))                       return ICONS.changes;
+  if (c.includes('disput') || c.includes('arbitrat'))                   return ICONS.disputes;
+  return ICONS.general;
+}
 
-      /* ── Lawyer expressions ── */
-      const FACES = {
-        green: `<path d="M32 38 Q40 44 48 38" stroke="#3D2B1F" stroke-width="2" stroke-linecap="round" fill="none"/>
+/* ── Lawyer expressions ── */
+const FACES = {
+  green: `<path d="M32 38 Q40 44 48 38" stroke="#3D2B1F" stroke-width="2" stroke-linecap="round" fill="none"/>
           <circle cx="33" cy="32" r="1.8" fill="#3D2B1F"/>
           <circle cx="47" cy="32" r="1.8" fill="#3D2B1F"/>
           <path d="M36 28 Q40 26 44 28" stroke="#3D2B1F" stroke-width="1" stroke-linecap="round" fill="none"/>`,
-        amber: `<path d="M33 40 Q40 40 47 40" stroke="#3D2B1F" stroke-width="2" stroke-linecap="round" fill="none"/>
+  amber: `<path d="M33 40 Q40 40 47 40" stroke="#3D2B1F" stroke-width="2" stroke-linecap="round" fill="none"/>
           <circle cx="33" cy="33" r="1.8" fill="#3D2B1F"/>
           <circle cx="47" cy="33" r="1.8" fill="#3D2B1F"/>
           <path d="M36 29 Q40 31 44 29" stroke="#3D2B1F" stroke-width="1" stroke-linecap="round" fill="none"/>`,
-        red: `<path d="M33 43 Q40 39 47 43" stroke="#3D2B1F" stroke-width="2" stroke-linecap="round" fill="none"/>
+  red:   `<path d="M33 43 Q40 39 47 43" stroke="#3D2B1F" stroke-width="2" stroke-linecap="round" fill="none"/>
           <circle cx="33" cy="33" r="2" fill="#3D2B1F"/>
           <circle cx="47" cy="33" r="2" fill="#3D2B1F"/>
           <path d="M35 30 Q40 33 45 30" stroke="#3D2B1F" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-          <text x="54" y="22" font-size="10" fill="#C44040">!</text>`,
-      };
+          <text x="54" y="22" font-size="10" fill="#C44040">!</text>`
+};
 
-      const LAWYER_MSGS = {
-        green: {
-          msg: "Looks good to me!",
-          sub: "Pretty standard terms overall.",
-        },
-        amber: {
-          msg: "A few things to note.",
-          sub: "Some clauses need your attention.",
-        },
-        red: {
-          msg: "This is concerning.",
-          sub: "Several high-risk clauses found.",
-        },
-      };
+const LAWYER_MSGS = {
+  green: { msg: 'Looks good to me!',     sub: 'Pretty standard terms overall.' },
+  amber: { msg: 'A few things to note.',  sub: 'Some clauses need your attention.' },
+  red:   { msg: 'This is concerning.',    sub: 'Several high-risk clauses found.' }
+};
 
-      function updateLawyer(score) {
-        document.getElementById("lawyerFace").innerHTML =
-          FACES[score] || FACES.amber;
-        const m = LAWYER_MSGS[score] || LAWYER_MSGS.amber;
-        document.getElementById("lawyerMsg").textContent = m.msg;
-        document.getElementById("lawyerSub").textContent = m.sub;
-        setTimeout(
-          () => document.getElementById("lawyerRow").classList.add("visible"),
-          100
-        );
-      }
+function updateLawyer(score) {
+  document.getElementById('lawyerFace').innerHTML = FACES[score] || FACES.amber;
+  const m = LAWYER_MSGS[score] || LAWYER_MSGS.amber;
+  document.getElementById('lawyerMsg').textContent = m.msg;
+  document.getElementById('lawyerSub').textContent = m.sub;
+  setTimeout(() => document.getElementById('lawyerRow').classList.add('visible'), 100);
+}
 
-      /* ── Sample ── */
-      const SAMPLE = `Terms of Service — SparkCloud App
+/* ── Sample ── */
+const SAMPLE = `Terms of Service — SparkCloud App
 Last updated: March 2024
 
 1. Data Collection. By creating an account, you agree that SparkCloud may collect, store, and process your personal data including your name, email address, location data, device information, and browsing behaviour within the app.
@@ -532,92 +290,72 @@ Last updated: March 2024
 
 8. Dispute Resolution. All disputes must be settled through binding arbitration in San Francisco. You waive your right to a jury trial and class action.`;
 
-      /* ── PDF Upload ── */
-      async function handlePDF(input) {
-        const file = input.files[0];
-        if (!file) return;
-        document.getElementById("uploadFilename").textContent = file.name;
+/* ── PDF Upload ── */
+async function handlePDF(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('uploadFilename').textContent = file.name;
 
-        try {
-          const arrayBuffer = await file.arrayBuffer();
-          const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-          let text = "";
-          for (let i = 1; i <= Math.min(pdf.numPages, 20); i++) {
-            const page = await pdf.getPage(i);
-            const content = await page.getTextContent();
-            text += content.items.map((item) => item.str).join(" ") + "\n";
-          }
-          document.getElementById("tcInput").value = text.trim();
-          document.getElementById(
-            "uploadFilename"
-          ).textContent = `✓ ${file.name} loaded`;
-        } catch (e) {
-          alert(
-            "Could not read the PDF. Try copying the text manually instead."
-          );
-          console.error(e);
-        }
-      }
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let text = '';
+    for (let i = 1; i <= Math.min(pdf.numPages, 20); i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      text += content.items.map(item => item.str).join(' ') + '\n';
+    }
+    document.getElementById('tcInput').value = text.trim();
+    document.getElementById('uploadFilename').textContent = `✓ ${file.name} loaded`;
+  } catch (e) {
+    alert('Could not read the PDF. Try copying the text manually instead.');
+    console.error(e);
+  }
+}
 
-      /* ── Helpers ── */
-      function loadSample() {
-        document.getElementById("tcInput").value = SAMPLE;
-      }
-      function show(id) {
-        document.getElementById(id).classList.add("visible");
-      }
-      function hide(id) {
-        document.getElementById(id).classList.remove("visible");
-      }
+/* ── Helpers ── */
+function loadSample() { document.getElementById('tcInput').value = SAMPLE; }
+function show(id) { document.getElementById(id).classList.add('visible'); }
+function hide(id) { document.getElementById(id).classList.remove('visible'); }
 
-      function resetAll() {
-        document.getElementById("tcInput").value = "";
-        document.getElementById("uploadFilename").textContent =
-          "No file chosen";
-        document.getElementById("pdfUpload").value = "";
-        ["results", "errorBox", "loadingState"].forEach(hide);
-        document.getElementById("lawyerRow").classList.remove("visible");
-        document.getElementById("heroSection").classList.remove("collapsed");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
+function resetAll() {
+  document.getElementById('tcInput').value = '';
+  document.getElementById('uploadFilename').textContent = 'No file chosen';
+  document.getElementById('pdfUpload').value = '';
+  ['results','errorBox','loadingState'].forEach(hide);
+  document.getElementById('lawyerRow').classList.remove('visible');
+  document.getElementById('heroSection').classList.remove('collapsed');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-      /* ── Store last result for PDF export ── */
-      let lastResult = null;
-      let lastDocName = "Terms & Conditions";
+/* ── Store last result for PDF export ── */
+let lastResult = null;
+let lastDocName = 'Terms & Conditions';
 
-      /* ── Analyse ── */
-      async function analyse() {
-        const text = document.getElementById("tcInput").value.trim();
-        if (!text) {
-          alert("Please paste or upload some terms and conditions first.");
-          return;
-        }
-        if (text.length < 80) {
-          alert("Text too short — paste the full T&C.");
-          return;
-        }
-        if (API_KEY === "YOUR_GROQ_API_KEY_HERE") {
-          alert(
-            "Add your Groq API key first.\nGet one free at console.groq.com"
-          );
-          return;
-        }
+/* ── Analyse ── */
+async function analyse() {
+  const text = document.getElementById('tcInput').value.trim();
+  if (!text)            { alert('Please paste or upload some terms and conditions first.'); return; }
+  if (text.length < 80) { alert('Text too short — paste the full T&C.'); return; }
+  if (API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
+    alert('Add your Groq API key first.\nGet one free at console.groq.com');
+    return;
+  }
 
-        const btn = document.getElementById("analyseBtn");
-        btn.disabled = true;
-        hide("results");
-        hide("errorBox");
-        show("loadingState");
+  const btn = document.getElementById('analyseBtn');
+  btn.disabled = true;
+  hide('results');
+  hide('errorBox');
+  show('loadingState');
 
-        /* Collapse hero smoothly */
-        document.getElementById("heroSection").classList.add("collapsed");
-        window.scrollTo({ top: 0, behavior: "smooth" });
+  /* Collapse hero smoothly */
+  document.getElementById('heroSection').classList.add('collapsed');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        const fname = document.getElementById("uploadFilename").textContent;
-        if (fname !== "No file chosen" && !fname.startsWith("✓"))
-          lastDocName = fname;
+  const fname = document.getElementById('uploadFilename').textContent;
+  if (fname !== 'No file chosen' && !fname.startsWith('✓')) lastDocName = fname;
 
-        const prompt = `You are a senior legal expert helping everyday people understand terms and conditions.
+  const prompt = `You are a senior legal expert helping everyday people understand terms and conditions.
 Analyse the T&C below. Respond ONLY with raw valid JSON — no markdown, no preamble, nothing outside the JSON.
 
 {
@@ -653,122 +391,95 @@ Rules:
 T&C text:
 ${text.substring(0, 4500)}`;
 
-        try {
-          const res = await fetch(
-            "https://api.groq.com/openai/v1/chat/completions",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${API_KEY}`,
-              },
-              body: JSON.stringify({
-                model: "llama-3.3-70b-versatile",
-                temperature: 0.2,
-                max_tokens: 1800,
-                messages: [{ role: "user", content: prompt }],
-              }),
-            }
-          );
+  try {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        temperature: 0.2,
+        max_tokens: 1800,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
 
-          if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.error?.message || `HTTP ${res.status}`);
-          }
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    }
 
-          const data = await res.json();
-          const raw = data.choices?.[0]?.message?.content || "";
-          const clean = raw.replace(/```json|```/g, "").trim();
-          const result = JSON.parse(clean);
-          lastResult = result;
+    const data = await res.json();
+    const raw  = data.choices?.[0]?.message?.content || '';
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const result = JSON.parse(clean);
+    lastResult = result;
 
-          renderResults(result);
-          hide("loadingState");
-          show("results");
-          document
-            .getElementById("results")
-            .scrollIntoView({ behavior: "smooth", block: "start" });
-        } catch (e) {
-          hide("loadingState");
-          document.getElementById("heroSection").classList.remove("collapsed");
-          const box = document.getElementById("errorBox");
-          box.textContent =
-            "Error: " +
-            (e.message || "Something went wrong. Please try again.");
-          show("errorBox");
-          console.error(e);
-        }
+    renderResults(result);
+    hide('loadingState');
+    show('results');
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-        btn.disabled = false;
-      }
+  } catch (e) {
+    hide('loadingState');
+    document.getElementById('heroSection').classList.remove('collapsed');
+    const box = document.getElementById('errorBox');
+    box.textContent = 'Error: ' + (e.message || 'Something went wrong. Please try again.');
+    show('errorBox');
+    console.error(e);
+  }
 
-      /* ── Render ── */
-      function renderResults(r) {
-        const score = r.riskScore || "amber";
+  btn.disabled = false;
+}
 
-        /* Lawyer */
-        updateLawyer(score);
+/* ── Render ── */
+function renderResults(r) {
+  const score = r.riskScore || 'amber';
 
-        /* Risk card */
-        const scoreClass =
-          { green: "risk-green", amber: "risk-amber", red: "risk-red" }[
-            score
-          ] || "risk-amber";
-        const emoji = { green: "✓", amber: "!", red: "✕" }[score] || "!";
-        document.getElementById("riskCard").innerHTML = `
+  /* Lawyer */
+  updateLawyer(score);
+
+  /* Risk card */
+  const scoreClass = { green:'risk-green', amber:'risk-amber', red:'risk-red' }[score] || 'risk-amber';
+  const emoji      = { green:'✓', amber:'!', red:'✕' }[score] || '!';
+  document.getElementById('riskCard').innerHTML = `
     <div class="risk-card ${scoreClass}">
       <div class="risk-icon-wrap">
         <span style="color:white;font-size:22px;font-weight:700">${emoji}</span>
       </div>
       <div>
         <div class="risk-eyebrow">Overall risk level</div>
-        <div class="risk-verdict">${r.riskVerdict || "Analysis complete"}</div>
-        <div class="risk-desc">${r.riskDescription || ""}</div>
+        <div class="risk-verdict">${r.riskVerdict || 'Analysis complete'}</div>
+        <div class="risk-desc">${r.riskDescription || ''}</div>
       </div>
     </div>`;
 
-        /* Key points */
-        document.getElementById("keyPoints").innerHTML = (r.keyPoints || [])
-          .map(
-            (p, i) => `
+  /* Key points */
+  document.getElementById('keyPoints').innerHTML = (r.keyPoints || []).map((p, i) => `
     <div class="key-point">
       <div class="kp-badge">${i + 1}</div>
       <div class="kp-text">${p}</div>
-    </div>`
-          )
-          .join("");
+    </div>`).join('');
 
-        /* Clause cards */
-        document.getElementById("clauseGrid").innerHTML = (r.clauses || [])
-          .map((c, i) => {
-            const anim = CARD_ANIMS[i % CARD_ANIMS.length];
-            const severity = Math.max(1, Math.min(10, c.severityScore || 5));
-            const pct = (severity / 10) * 100;
-            return `
-    <div class="clause-card flag-${
-      c.flagLevel || "low"
-    }" style="--card-anim:${anim}">
+  /* Clause cards */
+  document.getElementById('clauseGrid').innerHTML = (r.clauses || []).map((c, i) => {
+    const anim = CARD_ANIMS[i % CARD_ANIMS.length];
+    const severity = Math.max(1, Math.min(10, c.severityScore || 5));
+    const pct = (severity / 10) * 100;
+    return `
+    <div class="clause-card flag-${c.flagLevel || 'low'}" style="--card-anim:${anim}">
       <div class="clause-card-top">
         <div class="clause-icon-wrap">${getIcon(c.category)}</div>
-        <div class="clause-cat">${c.category || "General"}</div>
-        <div class="clause-title">${c.title || ""}</div>
+        <div class="clause-cat">${c.category || 'General'}</div>
+        <div class="clause-title">${c.title || ''}</div>
         <div class="severity-wrap">
           <div class="severity-label"><span>Severity</span><span>${severity}/10</span></div>
           <div class="severity-bar"><div class="severity-fill" style="width:${pct}%"></div></div>
         </div>
       </div>
-      ${
-        c.originalText
-          ? `<div class="clause-quote">"${c.originalText}"</div>`
-          : ""
-      }
+      ${c.originalText ? `<div class="clause-quote">"${c.originalText}"</div>` : ''}
       <span class="clause-flag-pill">
         <span class="flag-pill-dot"></span>
-        ${
-          { high: "High risk", medium: "Watch out", low: "Low risk" }[
-            c.flagLevel
-          ] || "Note"
-        }
+        ${{ high:'High risk', medium:'Watch out', low:'Low risk' }[c.flagLevel] || 'Note'}
       </span>
       <div class="clause-card-body">
         <div class="clause-section">
@@ -776,306 +487,260 @@ ${text.substring(0, 4500)}`;
             <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="4" stroke="#94A3B8" stroke-width="1"/><line x1="4.5" y1="3" x2="4.5" y2="5" stroke="#94A3B8" stroke-width="1" stroke-linecap="round"/></svg>
             What this means
           </div>
-          <div class="clause-section-text">${c.whatItMeans || ""}</div>
+          <div class="clause-section-text">${c.whatItMeans || ''}</div>
         </div>
         <div class="clause-section">
           <div class="clause-section-label">
             <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M2 4.5l2 2 3-3" stroke="#94A3B8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
             What to do
           </div>
-          <div class="clause-section-text action">${c.whatToDo || ""}</div>
+          <div class="clause-section-text action">${c.whatToDo || ''}</div>
         </div>
       </div>
     </div>`;
-          })
-          .join("");
+  }).join('');
 
-        /* Animate severity bars after render */
-        setTimeout(() => {
-          document.querySelectorAll(".severity-fill").forEach((el) => {
-            el.style.width = el.style.width;
-          });
-        }, 100);
-      }
+  /* Animate severity bars after render */
+  setTimeout(() => {
+    document.querySelectorAll('.severity-fill').forEach(el => {
+      el.style.width = el.style.width;
+    });
+  }, 100);
+}
 
-      /* ── PDF Download ── */
-      function downloadPDF() {
-        if (!lastResult) {
-          alert("Please run an analysis first.");
-          return;
-        }
+/* ── PDF Download ── */
+function downloadPDF() {
+  if (!lastResult) { alert('Please run an analysis first.'); return; }
 
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({ unit: "mm", format: "a4" });
-        const W = 210;
-        const H = 297;
-        const margin = 20;
-        const contentW = W - margin * 2;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const W = 210; const H = 297;
+  const margin = 20; const contentW = W - margin * 2;
 
-        /* Colours */
-        const NAVY = [11, 23, 40];
-        const AMBER = [201, 137, 58];
-        const CREAM = [247, 242, 234];
-        const MUTED = [100, 116, 139];
-        const RED = [196, 64, 64];
-        const GREEN = [26, 158, 114];
+  /* Colours */
+  const NAVY  = [11, 23, 40];
+  const AMBER = [201, 137, 58];
+  const CREAM = [247, 242, 234];
+  const MUTED = [100, 116, 139];
+  const RED   = [196, 64, 64];
+  const GREEN = [26, 158, 114];
 
-        const scoreColor =
-          { green: GREEN, amber: AMBER, red: RED }[lastResult.riskScore] ||
-          AMBER;
+  const scoreColor = { green: GREEN, amber: AMBER, red: RED }[lastResult.riskScore] || AMBER;
 
-        /* ── Cover page ── */
-        doc.setFillColor(...NAVY);
-        doc.rect(0, 0, W, H, "F");
+  /* ── Cover page ── */
+  doc.setFillColor(...NAVY);
+  doc.rect(0, 0, W, H, 'F');
 
-        /* Amber accent bar */
-        doc.setFillColor(...AMBER);
-        doc.rect(0, 0, 6, H, "F");
+  /* Amber accent bar */
+  doc.setFillColor(...AMBER);
+  doc.rect(0, 0, 6, H, 'F');
 
-        /* Logo */
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(28);
-        doc.setTextColor(...CREAM);
-        doc.text("LegalEase", margin + 4, 40);
+  /* Logo */
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(28);
+  doc.setTextColor(...CREAM);
+  doc.text('LegalEase', margin + 4, 40);
 
-        /* Tagline */
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(11);
-        doc.setTextColor(...AMBER);
-        doc.text("Legal language, finally human.", margin + 4, 50);
+  /* Tagline */
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(...AMBER);
+  doc.text('Legal language, finally human.', margin + 4, 50);
 
-        /* Divider */
-        doc.setDrawColor(...AMBER);
-        doc.setLineWidth(0.5);
-        doc.line(margin + 4, 56, W - margin, 56);
+  /* Divider */
+  doc.setDrawColor(...AMBER);
+  doc.setLineWidth(0.5);
+  doc.line(margin + 4, 56, W - margin, 56);
 
-        /* Report title */
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(16);
-        doc.setTextColor(...CREAM);
-        doc.text("Terms & Conditions Analysis Report", margin + 4, 72);
+  /* Report title */
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(...CREAM);
+  doc.text('Terms & Conditions Analysis Report', margin + 4, 72);
 
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(10);
-        doc.setTextColor(...MUTED);
-        doc.text(
-          "Generated by LegalEase on " +
-            new Date().toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            }),
-          margin + 4,
-          80
-        );
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(...MUTED);
+  doc.text('Generated by LegalEase on ' + new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }), margin + 4, 80);
 
-        /* Risk badge */
-        const riskLabel =
-          { green: "LOW RISK", amber: "MODERATE RISK", red: "HIGH RISK" }[
-            lastResult.riskScore
-          ] || "MODERATE RISK";
-        doc.setFillColor(...scoreColor);
-        doc.roundedRect(margin + 4, 94, 60, 16, 3, 3, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(10);
-        doc.setTextColor(255, 255, 255);
-        doc.text(riskLabel, margin + 34, 104, { align: "center" });
+  /* Risk badge */
+  const riskLabel = { green:'LOW RISK', amber:'MODERATE RISK', red:'HIGH RISK' }[lastResult.riskScore] || 'MODERATE RISK';
+  doc.setFillColor(...scoreColor);
+  doc.roundedRect(margin + 4, 94, 60, 16, 3, 3, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.setTextColor(255, 255, 255);
+  doc.text(riskLabel, margin + 34, 104, { align: 'center' });
 
-        /* Verdict */
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(18);
-        doc.setTextColor(...CREAM);
-        doc.text(lastResult.riskVerdict || "", margin + 4, 124);
+  /* Verdict */
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.setTextColor(...CREAM);
+  doc.text(lastResult.riskVerdict || '', margin + 4, 124);
 
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(11);
-        doc.setTextColor(...MUTED);
-        const descLines = doc.splitTextToSize(
-          lastResult.riskDescription || "",
-          contentW - 4
-        );
-        doc.text(descLines, margin + 4, 134);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(...MUTED);
+  const descLines = doc.splitTextToSize(lastResult.riskDescription || '', contentW - 4);
+  doc.text(descLines, margin + 4, 134);
 
-        /* Disclaimer box */
-        doc.setFillColor(30, 50, 70);
-        doc.roundedRect(margin + 4, H - 50, contentW - 4, 28, 3, 3, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(8);
-        doc.setTextColor(...AMBER);
-        doc.text("DISCLAIMER", margin + 10, H - 40);
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(...MUTED);
-        doc.setFontSize(8);
-        const disclaimerLines = doc.splitTextToSize(
-          "This report is generated by AI for informational purposes only and does not constitute legal advice. It may miss nuances or contain errors. For important contracts, always consult a qualified lawyer.",
-          contentW - 16
-        );
-        doc.text(disclaimerLines, margin + 10, H - 34);
+  /* Disclaimer box */
+  doc.setFillColor(30, 50, 70);
+  doc.roundedRect(margin + 4, H - 50, contentW - 4, 28, 3, 3, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(...AMBER);
+  doc.text('DISCLAIMER', margin + 10, H - 40);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(...MUTED);
+  doc.setFontSize(8);
+  const disclaimerLines = doc.splitTextToSize('This report is generated by AI for informational purposes only and does not constitute legal advice. It may miss nuances or contain errors. For important contracts, always consult a qualified lawyer.', contentW - 16);
+  doc.text(disclaimerLines, margin + 10, H - 34);
 
-        /* ── Page 2: Key Points ── */
-        doc.addPage();
-        doc.setFillColor(...CREAM);
-        doc.rect(0, 0, W, H, "F");
+  /* ── Page 2: Key Points ── */
+  doc.addPage();
+  doc.setFillColor(...CREAM);
+  doc.rect(0, 0, W, H, 'F');
 
-        /* Header strip */
-        doc.setFillColor(...NAVY);
-        doc.rect(0, 0, W, 18, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(9);
-        doc.setTextColor(...AMBER);
-        doc.text("LEGALEASE REPORT", margin, 11);
-        doc.setTextColor(200, 200, 200);
-        doc.text("Page 2 of 3", W - margin, 11, { align: "right" });
+  /* Header strip */
+  doc.setFillColor(...NAVY);
+  doc.rect(0, 0, W, 18, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(...AMBER);
+  doc.text('LEGALEASE REPORT', margin, 11);
+  doc.setTextColor(200, 200, 200);
+  doc.text('Page 2 of 3', W - margin, 11, { align: 'right' });
 
-        let y = 32;
+  let y = 32;
 
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(16);
-        doc.setTextColor(...NAVY);
-        doc.text("5 Things You Need to Know", margin, y);
-        y += 4;
-        doc.setDrawColor(...AMBER);
-        doc.setLineWidth(1);
-        doc.line(margin, y, margin + 80, y);
-        y += 12;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(...NAVY);
+  doc.text('5 Things You Need to Know', margin, y);
+  y += 4;
+  doc.setDrawColor(...AMBER);
+  doc.setLineWidth(1);
+  doc.line(margin, y, margin + 80, y);
+  y += 12;
 
-        (lastResult.keyPoints || []).forEach((pt, i) => {
-          /* Number circle */
-          doc.setFillColor(...NAVY);
-          doc.circle(margin + 5, y - 1, 4, "F");
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(8);
-          doc.setTextColor(255, 255, 255);
-          doc.text(String(i + 1), margin + 5, y + 1.5, { align: "center" });
+  (lastResult.keyPoints || []).forEach((pt, i) => {
+    /* Number circle */
+    doc.setFillColor(...NAVY);
+    doc.circle(margin + 5, y - 1, 4, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(255, 255, 255);
+    doc.text(String(i + 1), margin + 5, y + 1.5, { align: 'center' });
 
-          /* Point text */
-          doc.setFont("helvetica", "normal");
-          doc.setFontSize(10);
-          doc.setTextColor(...NAVY);
-          const ptLines = doc.splitTextToSize(pt, contentW - 16);
-          doc.text(ptLines, margin + 14, y + 1);
-          y += ptLines.length * 6 + 6;
-        });
+    /* Point text */
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...NAVY);
+    const ptLines = doc.splitTextToSize(pt, contentW - 16);
+    doc.text(ptLines, margin + 14, y + 1);
+    y += ptLines.length * 6 + 6;
+  });
 
-        /* ── Page 3: Clause Breakdown ── */
-        doc.addPage();
-        doc.setFillColor(...CREAM);
-        doc.rect(0, 0, W, H, "F");
-        doc.setFillColor(...NAVY);
-        doc.rect(0, 0, W, 18, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(9);
-        doc.setTextColor(...AMBER);
-        doc.text("LEGALEASE REPORT", margin, 11);
-        doc.setTextColor(200, 200, 200);
-        doc.text("Page 3 of 3", W - margin, 11, { align: "right" });
+  /* ── Page 3: Clause Breakdown ── */
+  doc.addPage();
+  doc.setFillColor(...CREAM);
+  doc.rect(0, 0, W, H, 'F');
+  doc.setFillColor(...NAVY);
+  doc.rect(0, 0, W, 18, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(...AMBER);
+  doc.text('LEGALEASE REPORT', margin, 11);
+  doc.setTextColor(200, 200, 200);
+  doc.text('Page 3 of 3', W - margin, 11, { align: 'right' });
 
-        y = 32;
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(16);
-        doc.setTextColor(...NAVY);
-        doc.text("Clause Breakdown", margin, y);
-        y += 4;
-        doc.setDrawColor(...AMBER);
-        doc.line(margin, y, margin + 60, y);
-        y += 12;
+  y = 32;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(...NAVY);
+  doc.text('Clause Breakdown', margin, y);
+  y += 4;
+  doc.setDrawColor(...AMBER);
+  doc.line(margin, y, margin + 60, y);
+  y += 12;
 
-        (lastResult.clauses || []).forEach((c) => {
-          if (y > H - 50) {
-            doc.addPage();
-            y = 28;
-          }
+  (lastResult.clauses || []).forEach(c => {
+    if (y > H - 50) { doc.addPage(); y = 28; }
 
-          const flagColor =
-            { high: RED, medium: AMBER, low: GREEN }[c.flagLevel] || MUTED;
-          const flagLabel =
-            { high: "HIGH RISK", medium: "WATCH OUT", low: "LOW RISK" }[
-              c.flagLevel
-            ] || "NOTE";
+    const flagColor = { high: RED, medium: AMBER, low: GREEN }[c.flagLevel] || MUTED;
+    const flagLabel = { high: 'HIGH RISK', medium: 'WATCH OUT', low: 'LOW RISK' }[c.flagLevel] || 'NOTE';
 
-          /* Card background */
-          doc.setFillColor(255, 255, 255);
-          const cardH = 44 + (c.originalText ? 10 : 0);
-          doc.roundedRect(margin, y, contentW, cardH, 3, 3, "F");
-          doc.setDrawColor(220, 220, 220);
-          doc.setLineWidth(0.3);
-          doc.roundedRect(margin, y, contentW, cardH, 3, 3, "S");
+    /* Card background */
+    doc.setFillColor(255, 255, 255);
+    const cardH = 44 + (c.originalText ? 10 : 0);
+    doc.roundedRect(margin, y, contentW, cardH, 3, 3, 'F');
+    doc.setDrawColor(220, 220, 220);
+    doc.setLineWidth(0.3);
+    doc.roundedRect(margin, y, contentW, cardH, 3, 3, 'S');
 
-          /* Left colour bar */
-          doc.setFillColor(...flagColor);
-          doc.roundedRect(margin, y, 3, cardH, 1.5, 1.5, "F");
+    /* Left colour bar */
+    doc.setFillColor(...flagColor);
+    doc.roundedRect(margin, y, 3, cardH, 1.5, 1.5, 'F');
 
-          /* Category + title */
-          doc.setFont("helvetica", "normal");
-          doc.setFontSize(7);
-          doc.setTextColor(...MUTED);
-          doc.text((c.category || "General").toUpperCase(), margin + 8, y + 8);
+    /* Category + title */
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(...MUTED);
+    doc.text((c.category || 'General').toUpperCase(), margin + 8, y + 8);
 
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(10);
-          doc.setTextColor(...NAVY);
-          doc.text(c.title || "", margin + 8, y + 15);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(...NAVY);
+    doc.text(c.title || '', margin + 8, y + 15);
 
-          /* Flag pill */
-          doc.setFillColor(...flagColor);
-          doc.roundedRect(W - margin - 28, y + 6, 26, 7, 2, 2, "F");
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(6.5);
-          doc.setTextColor(255, 255, 255);
-          doc.text(flagLabel, W - margin - 15, y + 11, { align: "center" });
+    /* Flag pill */
+    doc.setFillColor(...flagColor);
+    doc.roundedRect(W - margin - 28, y + 6, 26, 7, 2, 2, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.5);
+    doc.setTextColor(255, 255, 255);
+    doc.text(flagLabel, W - margin - 15, y + 11, { align: 'center' });
 
-          /* Severity score */
-          doc.setFont("helvetica", "normal");
-          doc.setFontSize(7);
-          doc.setTextColor(...MUTED);
-          doc.text(
-            `Severity: ${c.severityScore || "?"}/10`,
-            margin + 8,
-            y + 22
-          );
+    /* Severity score */
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(...MUTED);
+    doc.text(`Severity: ${c.severityScore || '?'}/10`, margin + 8, y + 22);
 
-          /* What it means */
-          doc.setFontSize(8);
-          doc.setTextColor(60, 70, 90);
-          const meansLines = doc.splitTextToSize(
-            "Means: " + (c.whatItMeans || ""),
-            contentW - 16
-          );
-          doc.text(meansLines, margin + 8, y + 29);
+    /* What it means */
+    doc.setFontSize(8);
+    doc.setTextColor(60, 70, 90);
+    const meansLines = doc.splitTextToSize('Means: ' + (c.whatItMeans || ''), contentW - 16);
+    doc.text(meansLines, margin + 8, y + 29);
 
-          /* What to do */
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(8);
-          doc.setTextColor(...NAVY);
-          const doLines = doc.splitTextToSize(
-            "Do: " + (c.whatToDo || ""),
-            contentW - 16
-          );
-          doc.text(doLines, margin + 8, y + 29 + meansLines.length * 4.5);
+    /* What to do */
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(...NAVY);
+    const doLines = doc.splitTextToSize('Do: ' + (c.whatToDo || ''), contentW - 16);
+    doc.text(doLines, margin + 8, y + 29 + meansLines.length * 4.5);
 
-          y += cardH + 6;
-        });
+    y += cardH + 6;
+  });
 
-        doc.save("LegalEase-Report.pdf");
-      }
+  doc.save('LegalEase-Report.pdf');
+}
 
-      /* ── On load ── */
-      window.addEventListener("load", () => {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((e, i) => {
-              if (e.isIntersecting)
-                setTimeout(() => e.target.classList.add("visible"), i * 130);
-            });
-          },
-          { threshold: 0.2 }
-        );
-        document.querySelectorAll(".step").forEach((s) => observer.observe(s));
+/* ── On load ── */
+window.addEventListener('load', () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 130);
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.step').forEach(s => observer.observe(s));
 
-        document.getElementById("tcInput").addEventListener("keydown", (e) => {
-          if (e.ctrlKey && e.key === "Enter") analyse();
-        });
-      });
-    </script>
-  </body>
+  document.getElementById('tcInput').addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'Enter') analyse();
+  });
+});
+</script>
+
+</body>
 </html>
