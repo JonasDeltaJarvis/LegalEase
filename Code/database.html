@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LegalEase — T&C Database</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Database-specific styles ── */
+    .db-hero {
+      background: var(--navy);
+      padding: 60px 0 52px;
+      position: relative; overflow: hidden;
+    }
+    .db-hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 50% 80% at 80% 50%, rgba(201,137,58,0.12) 0%, transparent 70%);
+    }
+    .db-hero-content { position: relative; z-index: 1; }
+    .db-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--amber2); margin-bottom: 16px;
+    }
+    .db-eyebrow-line { width: 28px; height: 1.5px; background: var(--amber2); }
+    .db-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(30px, 5vw, 46px);
+      line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--cream); max-width: 520px; margin-bottom: 14px;
+    }
+    .db-hero h1 em { color: var(--amber2); font-style: italic; }
+    .db-hero-sub {
+      font-size: 14px; font-weight: 300;
+      color: rgba(247,242,234,0.55);
+      max-width: 420px; line-height: 1.7; margin-bottom: 32px;
+    }
+
+    /* Stats row */
+    .db-stats {
+      display: flex; gap: 28px; flex-wrap: wrap;
+    }
+    .db-stat { }
+    .db-stat-num {
+      font-family: var(--serif); font-size: 28px; font-weight: 600;
+      color: var(--cream); line-height: 1;
+    }
+    .db-stat-label {
+      font-size: 11px; font-weight: 500; color: rgba(247,242,234,0.38);
+      letter-spacing: 0.06em; text-transform: uppercase; margin-top: 3px;
+    }
+    .db-stat-divider {
+      width: 1px; background: rgba(255,255,255,0.10); align-self: stretch;
+    }
+
+    /* ── Controls bar ── */
+    .controls-bar {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+      position: sticky; top: 64px; z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+    .controls-inner {
+      display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    }
+    .search-wrap {
+      position: relative; flex: 1; min-width: 200px;
+    }
+    .search-wrap svg {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--muted2); pointer-events: none;
+    }
+    .search-input {
+      width: 100%; padding: 10px 14px 10px 36px;
+      font-family: var(--sans); font-size: 13px;
+      background: var(--cream2); border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text); outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px var(--amber-glow);
+    }
+    .search-input::placeholder { color: var(--muted2); }
+
+    /* Filter buttons */
+    .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 8px 14px; font-family: var(--sans); font-size: 12px; font-weight: 500;
+      border-radius: 20px; border: 1.5px solid var(--border);
+      background: transparent; color: var(--muted); cursor: pointer;
+      transition: all 0.15s; white-space: nowrap;
+    }
+    .filter-btn:hover { background: var(--cream2); color: var(--text); }
+    .filter-btn.active { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+    .filter-btn.f-green.active { background: #3D7A12; border-color: #3D7A12; }
+    .filter-btn.f-amber.active { background: #B07A0C; border-color: #B07A0C; }
+    .filter-btn.f-red.active   { background: #A32020; border-color: #A32020; }
+
+    /* Sort select */
+    .sort-select {
+      padding: 9px 12px; font-family: var(--sans); font-size: 12px;
+      background: var(--cream2); border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--muted); cursor: pointer;
+      outline: none;
+    }
+
+    /* ── Main grid ── */
+    .db-main { padding: 40px 0 80px; }
+    .results-count {
+      font-size: 12px; color: var(--muted2); margin-bottom: 20px;
+      font-weight: 500;
+    }
+    .results-count span { color: var(--text); font-weight: 600; }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    /* ── Service card ── */
+    .service-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: default;
+    }
+    .service-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .service-card.hidden { display: none; }
+
+    /* Top colour bar */
+    .service-card::before {
+      content: ''; display: block; height: 4px;
+    }
+    .service-card.score-green::before { background: linear-gradient(90deg, #3D7A12, #5DAF22); }
+    .service-card.score-amber::before { background: linear-gradient(90deg, var(--amber), var(--amber2)); }
+    .service-card.score-red::before   { background: linear-gradient(90deg, var(--red), #E05555); }
+
+    .service-card-head {
+      padding: 18px 20px 14px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .service-logo {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .service-name-wrap { flex: 1; }
+    .service-name { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+    .service-category {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted2);
+    }
+    .risk-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .risk-pill.green { background: #EBF6DC; color: #2A6010; }
+    .risk-pill.amber { background: #FDF4E3; color: #7A5200; }
+    .risk-pill.red   { background: var(--red-light); color: #8B1A1A; }
+    .risk-pill-dot { width: 5px; height: 5px; border-radius: 50%; }
+    .risk-pill.green .risk-pill-dot { background: #3D7A12; }
+    .risk-pill.amber .risk-pill-dot { background: var(--amber); }
+    .risk-pill.red   .risk-pill-dot { background: var(--red); }
+
+    /* Verdict */
+    .service-verdict {
+      padding: 0 20px 14px;
+      font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4;
+    }
+
+    /* Score bar */
+    .score-bar-wrap { padding: 0 20px 16px; }
+    .score-bar-label {
+      display: flex; justify-content: space-between;
+      font-size: 10px; color: var(--muted2); margin-bottom: 5px;
+    }
+    .score-bar { height: 5px; background: var(--cream2); border-radius: 3px; overflow: hidden; }
+    .score-bar-fill { height: 100%; border-radius: 3px; }
+    .score-green .score-bar-fill { background: linear-gradient(90deg, #3D7A12, #5DAF22); }
+    .score-amber .score-bar-fill { background: linear-gradient(90deg, var(--amber), var(--amber2)); }
+    .score-red   .score-bar-fill { background: linear-gradient(90deg, var(--red), #E05555); }
+
+    /* Flags */
+    .service-flags {
+      border-top: 1px solid var(--border2);
+      padding: 12px 20px;
+      display: flex; flex-direction: column; gap: 7px;
+    }
+    .service-flag {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 12px; line-height: 1.45;
+    }
+    .flag-icon {
+      width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; margin-top: 1px;
+    }
+    .flag-icon.high   { background: var(--red-light); color: var(--red); }
+    .flag-icon.medium { background: var(--yellow-light); color: var(--amber); }
+    .flag-icon.low    { background: var(--teal-light); color: var(--teal); }
+    .flag-text { color: var(--muted); }
+    .flag-text strong { color: var(--text); font-weight: 600; }
+
+    /* Footer of card */
+    .service-card-foot {
+      border-top: 1px solid var(--border2);
+      padding: 10px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .service-updated { font-size: 10px; color: var(--muted2); }
+    .service-cta {
+      font-size: 11px; font-weight: 600; color: var(--amber);
+      background: none; border: none; cursor: pointer;
+      font-family: var(--sans); transition: color 0.2s;
+      text-decoration: none;
+    }
+    .service-cta:hover { color: var(--amber2); }
+
+    /* No results */
+    .no-results {
+      text-align: center; padding: 64px 20px; display: none;
+      grid-column: 1 / -1;
+    }
+    .no-results.visible { display: block; }
+    .no-results-emoji { font-size: 40px; margin-bottom: 12px; }
+    .no-results-title { font-family: var(--serif); font-size: 20px; margin-bottom: 6px; }
+    .no-results-sub { font-size: 13px; color: var(--muted); }
+
+    /* ── CTA banner ── */
+    .cta-banner {
+      background: var(--navy); border-radius: var(--radius-xl);
+      padding: 40px 36px; margin-top: 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px; flex-wrap: wrap;
+      position: relative; overflow: hidden;
+    }
+    .cta-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 100% at 100% 50%, rgba(230,164,78,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-banner-text { position: relative; z-index: 1; }
+    .cta-banner-title {
+      font-family: var(--serif); font-size: 22px; color: var(--cream);
+      margin-bottom: 6px; letter-spacing: -0.01em;
+    }
+    .cta-banner-sub { font-size: 13px; color: rgba(247,242,234,0.5); }
+    .cta-banner-btn {
+      background: var(--amber); color: var(--navy);
+      border: none; border-radius: var(--radius-sm);
+      padding: 12px 24px; font-family: var(--sans); font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: background 0.2s; white-space: nowrap;
+      text-decoration: none; display: inline-block; position: relative; z-index: 1;
+    }
+    .cta-banner-btn:hover { background: var(--amber2); }
+
+    @media (max-width: 600px) {
+      .controls-inner { flex-direction: column; align-items: stretch; }
+      .service-grid { grid-template-columns: 1fr; }
+      .db-stats { gap: 16px; }
+      .cta-banner { padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">Legal<span>Ease</span></a>
+      <span class="nav-tag">T&amp;C Database</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="db-hero">
+  <div class="db-hero-glow"></div>
+  <div class="container db-hero-content">
+    <p class="db-eyebrow"><span class="db-eyebrow-line"></span>Pre-analysed services</p>
+    <h1>What did you agree to with <em>your favourite apps?</em></h1>
+    <p class="db-hero-sub">We've analysed the terms and conditions of the world's most used services so you don't have to. Browse, compare, and know your rights.</p>
+    <div class="db-stats">
+      <div class="db-stat">
+        <div class="db-stat-num" id="totalCount">12</div>
+        <div class="db-stat-label">Services analysed</div>
+      </div>
+      <div class="db-stat-divider"></div>
+      <div class="db-stat">
+        <div class="db-stat-num" id="redCount">0</div>
+        <div class="db-stat-label">High risk</div>
+      </div>
+      <div class="db-stat-divider"></div>
+      <div class="db-stat">
+        <div class="db-stat-num" id="amberCount">0</div>
+        <div class="db-stat-label">Moderate risk</div>
+      </div>
+      <div class="db-stat-divider"></div>
+      <div class="db-stat">
+        <div class="db-stat-num" id="greenCount">0</div>
+        <div class="db-stat-label">Low risk</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTROLS -->
+<div class="controls-bar">
+  <div class="container">
+    <div class="controls-inner">
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M9.5 9.5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input class="search-input" id="searchInput" type="text" placeholder="Search services…" oninput="filterCards()">
+      </div>
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all"     onclick="setFilter('all',   this)">All</button>
+        <button class="filter-btn f-red"  data-filter="red"     onclick="setFilter('red',   this)">🔴 High risk</button>
+        <button class="filter-btn f-amber"data-filter="amber"   onclick="setFilter('amber', this)">🟡 Moderate</button>
+        <button class="filter-btn f-green"data-filter="green"   onclick="setFilter('green', this)">🟢 Low risk</button>
+      </div>
+      <select class="sort-select" id="sortSelect" onchange="sortCards()">
+        <option value="name">Sort: A–Z</option>
+        <option value="risk-high">Sort: Riskiest first</option>
+        <option value="risk-low">Sort: Safest first</option>
+        <option value="score">Sort: Score</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="db-main">
+  <div class="container">
+    <div class="results-count"><span id="visibleCount">12</span> services shown</div>
+    <div class="service-grid" id="serviceGrid">
+
+      <!-- Cards injected by JS -->
+
+      <div class="no-results" id="noResults">
+        <div class="no-results-emoji">🔍</div>
+        <div class="no-results-title">No services found</div>
+        <div class="no-results-sub">Try a different search term or filter.</div>
+      </div>
+    </div>
+
+    <!-- CTA Banner -->
+    <div class="cta-banner">
+      <div class="cta-banner-text">
+        <div class="cta-banner-title">Don't see your service?</div>
+        <div class="cta-banner-sub">Paste or upload any T&amp;C and get a full analysis in seconds.</div>
+      </div>
+      <a class="cta-banner-btn" href="index.html">Analyse any T&amp;C →</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">Legal<span>Ease</span></div>
+      <p class="footer-note">Analyses are AI-generated and updated periodically · Not legal advice</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════
+   DATABASE — Pre-scored services
+   Risk scores: green / amber / red
+   overallScore: 0-100 (higher = riskier)
+══════════════════════════════════════════ */
+const SERVICES = [
+  {
+    name: 'Google',
+    category: 'Search & Cloud',
+    emoji: '🔵',
+    logoBg: '#E8F0FE',
+    score: 'red',
+    overallScore: 78,
+    verdict: 'Extensive data collection with broad third-party sharing.',
+    updated: 'Jan 2025',
+    flags: [
+      { level: 'high',   label: 'Data collection', text: 'Collects browsing, location, and device data across all Google services.' },
+      { level: 'high',   label: 'Ad profiling',    text: 'Uses your data to build detailed advertising profiles shared with partners.' },
+      { level: 'medium', label: 'Terms changes',   text: 'Can update terms without direct notice — continued use means acceptance.' }
+    ]
+  },
+  {
+    name: 'Instagram',
+    category: 'Social Media',
+    emoji: '📸',
+    logoBg: '#FCEAEA',
+    score: 'red',
+    overallScore: 82,
+    verdict: 'Your photos and content can be used commercially without compensation.',
+    updated: 'Jan 2025',
+    flags: [
+      { level: 'high',   label: 'Content licence', text: 'Grants Meta a royalty-free licence to use your photos and videos commercially.' },
+      { level: 'high',   label: 'Data sharing',    text: 'Shares data across all Meta platforms including Facebook and WhatsApp.' },
+      { level: 'high',   label: 'Ad targeting',    text: 'Uses facial recognition and behavioural data for ad targeting.' }
+    ]
+  },
+  {
+    name: 'TikTok',
+    category: 'Social Media',
+    emoji: '🎵',
+    logoBg: '#F0F0F0',
+    score: 'red',
+    overallScore: 88,
+    verdict: 'Among the most aggressive data collection policies of any major platform.',
+    updated: 'Jan 2025',
+    flags: [
+      { level: 'high',   label: 'Data collection', text: 'Collects biometric data including faceprints and voiceprints without explicit consent.' },
+      { level: 'high',   label: 'Third-party share',text: 'Data can be shared with parent company ByteDance servers in China.' },
+      { level: 'high',   label: 'Content rights',  text: 'Grants TikTok a perpetual licence to all content you post.' }
+    ]
+  },
+  {
+    name: 'WhatsApp',
+    category: 'Messaging',
+    emoji: '💬',
+    logoBg: '#E8F5E9',
+    score: 'amber',
+    overallScore: 62,
+    verdict: 'Messages are encrypted but metadata is shared extensively with Meta.',
+    updated: 'Jan 2025',
+    flags: [
+      { level: 'high',   label: 'Metadata sharing', text: 'Shares contact lists, usage patterns, and device info with Meta and advertisers.' },
+      { level: 'medium', label: 'Business data',    text: 'Messages to business accounts may be stored and used by those businesses.' },
+      { level: 'low',    label: 'Encryption',       text: 'End-to-end encryption protects message content — a genuine positive.' }
+    ]
+  },
+  {
+    name: 'Spotify',
+    category: 'Music Streaming',
+    emoji: '🎧',
+    logoBg: '#E8F5E9',
+    score: 'amber',
+    overallScore: 55,
+    verdict: 'Reasonable terms but collects more data than most users realise.',
+    updated: 'Jan 2025',
+    flags: [
+      { level: 'medium', label: 'Listening data',  text: 'Tracks every song, podcast, and playlist you interact with and shares with partners.' },
+      { level: 'medium', label: 'Voice data',      text: 'Microphone access can be used if voice features are enabled.' },
+      { level: 'low',    label: 'Cancellation',    text: 'Premium can be cancelled at any time with no penalty — fair policy.' }
+    ]
+  },
+  {
+    name: 'Netflix',
+    category: 'Video Streaming',
+    emoji: '🎬',
+    logoBg: '#FCEAEA',
+    score: 'amber',
+    overallScore: 48,
+    verdict: 'Standard streaming terms with a few billing clauses to watch.',
+    updated: 'Jan 2025',
+    flags: [
+      { level: 'medium', label: 'Auto-renewal',    text: 'Subscription renews automatically — cancellation must happen before billing date.' },
+      { level: 'medium', label: 'Content removal', text: 'Netflix can remove content from the library at any time without notice.' },
+      { level: 'low',    label: 'Data use',        text: 'Viewing data is used for recommendations but not sold to advertisers.' }
+    ]
+  },
+  {
+    name: 'Apple',
+    category: 'Technology',
+    emoji: '🍎',
+    logoBg: '#F5F5F5',
+    score: 'amber',
+    overallScore: 44,
+    verdict: 'Better than most big tech — but iCloud data and arbitration clauses are notable.',
+    updated: 'Jan 2025',
+    flags: [
+      { level: 'medium', label: 'iCloud data',     text: 'iCloud content can be accessed by Apple under certain legal circumstances.' },
+      { level: 'medium', label: 'Arbitration',     text: 'Disputes must go through binding arbitration — class action waived.' },
+      { level: 'low',    label: 'Privacy stance',  text: 'Apple does not sell personal data to third parties — a genuine commitment.' }
+    ]
+  },
+  {
+    name: 'Twitter / X',
+    category: 'Social Media',
+    emoji: '🐦',
+    logoBg: '#F0F0F0',
+    score: 'red',
+    overallScore: 80,
+    verdict: 'Post-2023 changes dramatically expanded X\'s rights over your content.',
+    updated: 'Jan 2025',
+    flags: [
+      { level: 'high',   label: 'Content rights',  text: 'X can use your tweets and media to train AI models without compensation.' },
+      { level: 'high',   label: 'Account removal', text: 'Accounts can be suspended at any time with no appeal process guaranteed.' },
+      { level: 'medium', label: 'Data sharing',    text: 'Shares user data with advertisers and business partners broadly.' }
+    ]
+  },
+  {
+    name: 'Snapchat',
+    category: 'Social Media',
+    emoji: '👻',
+    logoBg: '#FFFDE7',
+    score: 'amber',
+    overallScore: 65,
+    verdict: '"Disappearing" content isn\'t as private as the brand suggests.',
+    updated: 'Jan 2025',
+    flags: [
+      { level: 'high',   label: 'Content licence', text: 'Grants Snapchat rights to use your Snaps and Stories for promotional purposes.' },
+      { level: 'medium', label: 'Data retention',  text: 'Snaps may be retained longer than advertised for legal and safety reasons.' },
+      { level: 'medium', label: 'Location data',   text: 'Collects precise location data even when the app is running in the background.' }
+    ]
+  },
+  {
+    name: 'YouTube',
+    category: 'Video Platform',
+    emoji: '▶️',
+    logoBg: '#FCEAEA',
+    score: 'red',
+    overallScore: 74,
+    verdict: 'Creator-unfriendly clauses and aggressive content monetisation rights.',
+    updated: 'Jan 2025',
+    flags: [
+      { level: 'high',   label: 'Content rights',  text: 'YouTube can monetise your videos with ads without sharing revenue unless you\'re a partner.' },
+      { level: 'high',   label: 'Content removal', text: 'Can remove any video without notice or explanation at any time.' },
+      { level: 'medium', label: 'Data collection', text: 'Watch history, search terms, and interactions used for Google ad profiling.' }
+    ]
+  },
+  {
+    name: 'Uber',
+    category: 'Ride Sharing',
+    emoji: '🚗',
+    logoBg: '#F0F0F0',
+    score: 'amber',
+    overallScore: 58,
+    verdict: 'Broad data collection with a strict arbitration clause to note.',
+    updated: 'Jan 2025',
+    flags: [
+      { level: 'high',   label: 'Arbitration',     text: 'All disputes settled through binding arbitration — you waive the right to sue.' },
+      { level: 'medium', label: 'Location data',   text: 'Tracks your precise location continuously, even when not on a trip.' },
+      { level: 'low',    label: 'Surge pricing',   text: 'Terms clearly disclose surge pricing — at least it\'s transparent.' }
+    ]
+  },
+  {
+    name: 'PayPal',
+    category: 'Payments',
+    emoji: '💳',
+    logoBg: '#E8F0FE',
+    score: 'amber',
+    overallScore: 60,
+    verdict: 'Financial data is handled responsibly but account freeze clauses are concerning.',
+    updated: 'Jan 2025',
+    flags: [
+      { level: 'high',   label: 'Account freeze',  text: 'Can freeze your account and hold funds for up to 180 days without explanation.' },
+      { level: 'medium', label: 'Data sharing',    text: 'Shares financial data with credit agencies and marketing partners.' },
+      { level: 'low',    label: 'Buyer protection',text: 'Offers genuine buyer protection on eligible purchases — a real benefit.' }
+    ]
+  }
+];
+
+/* ── State ── */
+let activeFilter = 'all';
+let currentSort  = 'name';
+
+/* ── Build cards ── */
+function buildCards() {
+  const grid = document.getElementById('serviceGrid');
+
+  /* Clear existing cards but keep no-results div */
+  const noRes = document.getElementById('noResults');
+  grid.innerHTML = '';
+  grid.appendChild(noRes);
+
+  SERVICES.forEach((s, i) => {
+    const card = document.createElement('div');
+    card.className = `service-card score-${s.score}`;
+    card.dataset.score    = s.score;
+    card.dataset.name     = s.name.toLowerCase();
+    card.dataset.category = s.category.toLowerCase();
+    card.dataset.overall  = s.overallScore;
+    card.dataset.index    = i;
+
+    const scoreLabel = { green: 'Low risk', amber: 'Moderate', red: 'High risk' }[s.score];
+    const flagsHTML = s.flags.map(f => `
+      <div class="service-flag">
+        <div class="flag-icon ${f.level}">${f.level === 'high' ? '!' : f.level === 'medium' ? '~' : '✓'}</div>
+        <div class="flag-text"><strong>${f.label}:</strong> ${f.text}</div>
+      </div>`).join('');
+
+    const barPct = s.overallScore;
+
+    card.innerHTML = `
+      <div class="service-card-head">
+        <div class="service-logo" style="background:${s.logoBg}">${s.emoji}</div>
+        <div class="service-name-wrap">
+          <div class="service-name">${s.name}</div>
+          <div class="service-category">${s.category}</div>
+        </div>
+        <div class="risk-pill ${s.score}">
+          <span class="risk-pill-dot"></span>
+          ${scoreLabel}
+        </div>
+      </div>
+      <div class="service-verdict">${s.verdict}</div>
+      <div class="score-bar-wrap">
+        <div class="score-bar-label"><span>Risk score</span><span>${s.overallScore}/100</span></div>
+        <div class="score-bar ${`score-${s.score}`}">
+          <div class="score-bar-fill" style="width:0%" data-target="${barPct}%"></div>
+        </div>
+      </div>
+      <div class="service-flags">${flagsHTML}</div>
+      <div class="service-card-foot">
+        <span class="service-updated">Updated ${s.updated}</span>
+        <a class="service-cta" href="index.html">Analyse yourself →</a>
+      </div>`;
+
+    grid.insertBefore(card, noRes);
+  });
+
+  /* Animate score bars */
+  setTimeout(() => {
+    document.querySelectorAll('.score-bar-fill').forEach(el => {
+      el.style.transition = 'width 0.9s ease 0.2s';
+      el.style.width = el.dataset.target;
+    });
+  }, 100);
+
+  /* Update stat counts */
+  updateStats();
+  filterCards();
+}
+
+/* ── Stats ── */
+function updateStats() {
+  document.getElementById('totalCount').textContent = SERVICES.length;
+  document.getElementById('redCount').textContent   = SERVICES.filter(s => s.score === 'red').length;
+  document.getElementById('amberCount').textContent = SERVICES.filter(s => s.score === 'amber').length;
+  document.getElementById('greenCount').textContent = SERVICES.filter(s => s.score === 'green').length;
+}
+
+/* ── Filter ── */
+function setFilter(filter, btn) {
+  activeFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterCards();
+}
+
+function filterCards() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.service-card');
+  let visible = 0;
+
+  cards.forEach(card => {
+    const matchesFilter = activeFilter === 'all' || card.dataset.score === activeFilter;
+    const matchesSearch = !query ||
+      card.dataset.name.includes(query) ||
+      card.dataset.category.includes(query);
+
+    if (matchesFilter && matchesSearch) {
+      card.classList.remove('hidden');
+      visible++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  document.getElementById('visibleCount').textContent = visible;
+  document.getElementById('noResults').classList.toggle('visible', visible === 0);
+}
+
+/* ── Sort ── */
+function sortCards() {
+  currentSort = document.getElementById('sortSelect').value;
+  const grid  = document.getElementById('serviceGrid');
+  const noRes = document.getElementById('noResults');
+  const cards = [...document.querySelectorAll('.service-card')];
+
+  cards.sort((a, b) => {
+    if (currentSort === 'name')      return a.dataset.name.localeCompare(b.dataset.name);
+    if (currentSort === 'risk-high') return parseInt(b.dataset.overall) - parseInt(a.dataset.overall);
+    if (currentSort === 'risk-low')  return parseInt(a.dataset.overall) - parseInt(b.dataset.overall);
+    if (currentSort === 'score')     return parseInt(b.dataset.overall) - parseInt(a.dataset.overall);
+    return 0;
+  });
+
+  cards.forEach(card => grid.insertBefore(card, noRes));
+}
+
+/* ── Init ── */
+window.addEventListener('load', () => {
+  buildCards();
+
+  /* Step reveal */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 100);
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.step').forEach(s => observer.observe(s));
+});
+</script>
+
+</body>
+</html>
