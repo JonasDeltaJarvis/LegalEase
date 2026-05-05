@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LegalEase — Terms & Conditions</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .terms-hero {
+      background: var(--navy);
+      padding: 60px 0 52px;
+      position: relative; overflow: hidden;
+    }
+    .terms-hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 50% 80% at 80% 50%, rgba(201,137,58,0.10) 0%, transparent 70%);
+    }
+    .terms-hero-content { position: relative; z-index: 1; }
+    .terms-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--amber2); margin-bottom: 16px;
+    }
+    .terms-eyebrow-line { width: 28px; height: 1.5px; background: var(--amber2); }
+    .terms-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(28px, 5vw, 42px);
+      line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--cream); max-width: 520px; margin-bottom: 14px;
+    }
+    .terms-hero-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 12px; color: rgba(247,242,234,0.4);
+    }
+    .terms-hero-meta span { display: flex; align-items: center; gap: 6px; }
+
+    /* ── Document body ── */
+    .terms-body { padding: 56px 0 80px; }
+    .terms-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* Sticky sidebar TOC */
+    .terms-toc {
+      position: sticky; top: 84px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 20px;
+    }
+    .toc-title {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 14px;
+    }
+    .toc-list { display: flex; flex-direction: column; gap: 2px; }
+    .toc-item {
+      display: block; font-size: 12px; color: var(--muted);
+      text-decoration: none; padding: 6px 10px; border-radius: 6px;
+      transition: background 0.15s, color 0.15s; line-height: 1.4;
+    }
+    .toc-item:hover { background: var(--cream2); color: var(--text); }
+    .toc-item.active { background: var(--navy); color: var(--cream); font-weight: 500; }
+
+    /* Main content */
+    .terms-content { min-width: 0; }
+
+    /* Disclaimer box at top */
+    .terms-disclaimer {
+      background: var(--yellow-light); border: 1px solid #F5D88C;
+      border-radius: var(--radius); padding: 16px 20px;
+      margin-bottom: 40px; display: flex; gap: 12px; align-items: flex-start;
+    }
+    .terms-disclaimer-icon { font-size: 18px; flex-shrink: 0; }
+    .terms-disclaimer-text { font-size: 13px; line-height: 1.7; color: #5A3D00; }
+    .terms-disclaimer-text strong { color: #3D2800; }
+
+    /* Sections */
+    .terms-section { margin-bottom: 44px; scroll-margin-top: 90px; }
+    .terms-section-num {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+    }
+    .terms-section-num::before { content: ''; width: 16px; height: 1.5px; background: var(--amber); }
+    .terms-section h2 {
+      font-family: var(--serif); font-size: 22px; font-weight: 600;
+      margin-bottom: 14px; letter-spacing: -0.01em;
+    }
+    .terms-section p {
+      font-size: 14px; line-height: 1.85; color: #2D3748; margin-bottom: 12px;
+    }
+    .terms-section p:last-child { margin-bottom: 0; }
+    .terms-section ul {
+      margin: 10px 0 12px 0; padding-left: 0;
+      list-style: none; display: flex; flex-direction: column; gap: 8px;
+    }
+    .terms-section ul li {
+      font-size: 14px; line-height: 1.75; color: #2D3748;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .terms-section ul li::before {
+      content: '–'; color: var(--amber); font-weight: 700; flex-shrink: 0; margin-top: 1px;
+    }
+    .terms-section a { color: var(--amber); text-decoration: underline; text-underline-offset: 2px; }
+    .terms-section a:hover { color: var(--amber2); }
+
+    /* Highlight box */
+    .terms-highlight {
+      background: var(--cream2); border-left: 3px solid var(--amber);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 14px 18px; margin: 16px 0;
+      font-size: 13px; line-height: 1.7; color: var(--text);
+    }
+    .terms-highlight strong { color: var(--navy); }
+
+    /* Divider */
+    .terms-divider { height: 1px; background: var(--border2); margin: 40px 0; }
+
+    /* Contact card */
+    .contact-card {
+      background: var(--navy); border-radius: var(--radius-lg);
+      padding: 28px 32px; margin-top: 48px;
+      position: relative; overflow: hidden;
+    }
+    .contact-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 100% at 100% 50%, rgba(230,164,78,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .contact-card h3 {
+      font-family: var(--serif); font-size: 20px; color: var(--cream);
+      margin-bottom: 8px; position: relative; z-index: 1;
+    }
+    .contact-card p {
+      font-size: 13px; color: rgba(247,242,234,0.5);
+      margin-bottom: 16px; position: relative; z-index: 1;
+    }
+    .contact-card a {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--amber); color: var(--navy);
+      padding: 10px 20px; border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 700; text-decoration: none;
+      transition: background 0.2s; position: relative; z-index: 1;
+    }
+    .contact-card a:hover { background: var(--amber2); }
+
+    /* Back to top */
+    .back-to-top {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--muted); background: none; border: none;
+      cursor: pointer; font-family: var(--sans); margin-top: 32px;
+      transition: color 0.2s;
+    }
+    .back-to-top:hover { color: var(--text); }
+
+    @media (max-width: 720px) {
+      .terms-layout { grid-template-columns: 1fr; }
+      .terms-toc { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">Legal<span>Ease</span></a>
+      <span class="nav-tag">Terms &amp; Conditions</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="terms-hero">
+  <div class="terms-hero-glow"></div>
+  <div class="container terms-hero-content">
+    <p class="terms-eyebrow"><span class="terms-eyebrow-line"></span>Legal documents</p>
+    <h1>Terms &amp; Conditions</h1>
+    <div class="terms-hero-meta">
+      <span>Last updated: May 2025</span>
+      <span>Governed by the laws of Zambia</span>
+      <span>Jonas Mukendenge</span>
+    </div>
+  </div>
+</section>
+
+<!-- BODY -->
+<div class="terms-body">
+  <div class="container">
+    <div class="terms-layout">
+
+      <!-- Sidebar TOC -->
+      <aside class="terms-toc">
+        <div class="toc-title">Contents</div>
+        <div class="toc-list">
+          <a class="toc-item" href="#acceptance">1. Acceptance</a>
+          <a class="toc-item" href="#description">2. What LegalEase does</a>
+          <a class="toc-item" href="#disclaimer">3. Not legal advice</a>
+          <a class="toc-item" href="#accuracy">4. Accuracy</a>
+          <a class="toc-item" href="#use">5. Acceptable use</a>
+          <a class="toc-item" href="#data">6. Your data</a>
+          <a class="toc-item" href="#ip">7. Intellectual property</a>
+          <a class="toc-item" href="#liability">8. Liability</a>
+          <a class="toc-item" href="#changes">9. Changes to terms</a>
+          <a class="toc-item" href="#termination">10. Termination</a>
+          <a class="toc-item" href="#governing">11. Governing law</a>
+          <a class="toc-item" href="#contact">12. Contact</a>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="terms-content">
+
+        <!-- Disclaimer box -->
+        <div class="terms-disclaimer">
+          <div class="terms-disclaimer-icon">⚡</div>
+          <div class="terms-disclaimer-text">
+            <strong>Plain English summary:</strong> LegalEase is a free AI tool that helps you understand terms and conditions. It is not a law firm, not a lawyer, and the analysis it provides is not legal advice. By using LegalEase you agree to these terms. If you disagree with any part, please stop using the service.
+          </div>
+        </div>
+
+        <!-- 1. Acceptance -->
+        <div class="terms-section" id="acceptance">
+          <div class="terms-section-num">Section 01</div>
+          <h2>Acceptance of Terms</h2>
+          <p>By accessing or using LegalEase ("the Service", "we", "us"), you confirm that you have read, understood, and agree to be bound by these Terms and Conditions. These terms apply to all visitors and users of the Service.</p>
+          <p>If you are under 13 years of age, you may not use this Service. If you are between 13 and 18 years of age, you confirm that you have obtained parental or guardian consent to use this Service.</p>
+          <div class="terms-highlight">
+            <strong>In plain English:</strong> Using LegalEase means you agree to these rules. If you're under 13, please don't use it. If you're a teenager, ask a parent first.
+          </div>
+        </div>
+
+        <div class="terms-divider"></div>
+
+        <!-- 2. Description -->
+        <div class="terms-section" id="description">
+          <div class="terms-section-num">Section 02</div>
+          <h2>What LegalEase Does</h2>
+          <p>LegalEase is an AI-powered tool that analyses terms and conditions documents. Users can paste text or upload PDF documents, and the Service uses artificial intelligence to generate plain-English summaries, risk scores, and clause breakdowns.</p>
+          <p>The Service also provides a pre-analysed database of commonly used online services for informational and educational purposes.</p>
+          <p>LegalEase is provided free of charge. We reserve the right to introduce paid features or limitations in the future, with reasonable notice to users.</p>
+        </div>
+
+        <div class="terms-divider"></div>
+
+        <!-- 3. Not legal advice -->
+        <div class="terms-section" id="disclaimer">
+          <div class="terms-section-num">Section 03</div>
+          <h2>Not Legal Advice — Important</h2>
+          <p>LegalEase is an informational tool only. Nothing generated by this Service constitutes legal advice, legal opinion, or a substitute for consultation with a qualified legal professional.</p>
+          <p>Specifically, you acknowledge and agree that:</p>
+          <ul>
+            <li>AI-generated analysis may contain errors, omissions, or misinterpretations of legal language.</li>
+            <li>A risk score of "Low Risk" or "Green" does not mean a document is safe to sign in your specific circumstances.</li>
+            <li>LegalEase cannot account for your personal situation, jurisdiction-specific laws, or the specific context in which an agreement is being signed.</li>
+            <li>You should always consult a qualified lawyer before signing any legally binding contract that has significant financial, personal, or professional implications.</li>
+          </ul>
+          <div class="terms-highlight">
+            <strong>In plain English:</strong> We use AI to help you understand legal documents. AI is not a lawyer and can make mistakes. Please see a real lawyer for anything important.
+          </div>
+        </div>
+
+        <div class="terms-divider"></div>
+
+        <!-- 4. Accuracy -->
+        <div class="terms-section" id="accuracy">
+          <div class="terms-section-num">Section 04</div>
+          <h2>Accuracy of Analysis</h2>
+          <p>LegalEase makes no warranty, express or implied, regarding the accuracy, completeness, or reliability of any analysis, summary, risk score, or other output generated by the Service.</p>
+          <p>Legal documents are complex and context-dependent. The AI models used by LegalEase may:</p>
+          <ul>
+            <li>Misinterpret ambiguous legal language.</li>
+            <li>Fail to identify jurisdiction-specific implications of a clause.</li>
+            <li>Assign an incorrect risk level to a clause that is standard in one industry but unusual in another.</li>
+            <li>Miss clauses that are embedded within referenced documents not included in the uploaded text.</li>
+          </ul>
+          <p>The pre-analysed database of third-party services reflects our best understanding at the time of analysis. Terms and conditions change frequently, and database entries may not reflect the most current version of a service's terms.</p>
+        </div>
+
+        <div class="terms-divider"></div>
+
+        <!-- 5. Acceptable use -->
+        <div class="terms-section" id="use">
+          <div class="terms-section-num">Section 05</div>
+          <h2>Acceptable Use</h2>
+          <p>You agree to use LegalEase only for lawful purposes and in a manner consistent with these terms. You must not:</p>
+          <ul>
+            <li>Use the Service to analyse documents containing personal data of others without their consent.</li>
+            <li>Attempt to reverse-engineer, scrape, or extract data from the Service in an automated manner.</li>
+            <li>Use the Service to generate misleading legal summaries for fraudulent purposes.</li>
+            <li>Upload documents that contain content that is illegal, offensive, or violates the rights of third parties.</li>
+            <li>Attempt to overload, disrupt, or gain unauthorised access to the Service or its underlying infrastructure.</li>
+            <li>Resell or commercially redistribute the output of the Service without our express written permission.</li>
+          </ul>
+          <div class="terms-highlight">
+            <strong>In plain English:</strong> Use LegalEase fairly and honestly. Don't try to break it, copy it, or use it to trick people.
+          </div>
+        </div>
+
+        <div class="terms-divider"></div>
+
+        <!-- 6. Data -->
+        <div class="terms-section" id="data">
+          <div class="terms-section-num">Section 06</div>
+          <h2>Your Data &amp; Privacy</h2>
+          <p>When you use LegalEase, the text you submit is sent to a third-party AI provider (currently Groq, Inc.) for processing. By using the Service, you consent to this transfer.</p>
+          <p>We do not permanently store the text you submit for analysis. Documents are processed in real time and are not retained on our servers after your session ends.</p>
+          <p>We do not collect personal information such as your name, email address, or account details unless you voluntarily provide them through contact forms or future account features.</p>
+          <p>We do not sell your data to third parties. We do not use your submitted documents for advertising purposes.</p>
+          <div class="terms-highlight">
+            <strong>In plain English:</strong> The text you paste gets sent to the AI to be read. We don't save it after, we don't sell it, and we don't use it for ads.
+          </div>
+        </div>
+
+        <div class="terms-divider"></div>
+
+        <!-- 7. IP -->
+        <div class="terms-section" id="ip">
+          <div class="terms-section-num">Section 07</div>
+          <h2>Intellectual Property</h2>
+          <p>The LegalEase name, logo, design, database content, and all original content on this website are the intellectual property of Jonas Mukendenge and are protected under applicable copyright and intellectual property laws.</p>
+          <p>You may not copy, reproduce, distribute, or create derivative works from our content without express written permission, except where permitted by applicable law.</p>
+          <p>The text you submit for analysis remains your property. By submitting it, you grant us a limited, temporary licence to process it solely for the purpose of generating your analysis.</p>
+        </div>
+
+        <div class="terms-divider"></div>
+
+        <!-- 8. Liability -->
+        <div class="terms-section" id="liability">
+          <div class="terms-section-num">Section 08</div>
+          <h2>Limitation of Liability</h2>
+          <p>To the fullest extent permitted by applicable law, Jonas Mukendenge and LegalEase shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from:</p>
+          <ul>
+            <li>Your use of or reliance on any analysis, summary, or risk score generated by the Service.</li>
+            <li>Any decision you make based on information provided by LegalEase.</li>
+            <li>Any errors, inaccuracies, or omissions in AI-generated content.</li>
+            <li>Interruption or unavailability of the Service.</li>
+            <li>Unauthorised access to or alteration of your submitted content.</li>
+          </ul>
+          <p>Your sole remedy for dissatisfaction with the Service is to stop using it.</p>
+          <div class="terms-highlight">
+            <strong>In plain English:</strong> If you make a bad decision because of something LegalEase said, we are not legally responsible. We're a free AI tool, not a law firm.
+          </div>
+        </div>
+
+        <div class="terms-divider"></div>
+
+        <!-- 9. Changes -->
+        <div class="terms-section" id="changes">
+          <div class="terms-section-num">Section 09</div>
+          <h2>Changes to These Terms</h2>
+          <p>We reserve the right to update or modify these Terms and Conditions at any time. When we make changes, we will update the "Last updated" date at the top of this page.</p>
+          <p>Continued use of the Service after changes are posted constitutes your acceptance of the revised terms. We encourage you to review this page periodically.</p>
+          <p>For significant changes, we will make reasonable efforts to notify users through a notice on the website.</p>
+        </div>
+
+        <div class="terms-divider"></div>
+
+        <!-- 10. Termination -->
+        <div class="terms-section" id="termination">
+          <div class="terms-section-num">Section 10</div>
+          <h2>Termination of Access</h2>
+          <p>We reserve the right to restrict, suspend, or terminate your access to the Service at any time, without notice, if we believe you have violated these terms or are using the Service in a way that could cause harm to others or to us.</p>
+          <p>We also reserve the right to discontinue the Service entirely at any time. In such a case, we will make reasonable efforts to provide advance notice.</p>
+        </div>
+
+        <div class="terms-divider"></div>
+
+        <!-- 11. Governing law -->
+        <div class="terms-section" id="governing">
+          <div class="terms-section-num">Section 11</div>
+          <h2>Governing Law</h2>
+          <p>These Terms and Conditions are governed by and construed in accordance with the laws of the Republic of Zambia, without regard to its conflict of law provisions.</p>
+          <p>Any disputes arising from these terms or your use of the Service shall be subject to the exclusive jurisdiction of the courts of Zambia.</p>
+          <p>If any provision of these terms is found to be unenforceable or invalid under applicable law, that provision will be limited or removed to the minimum extent necessary, and the remaining provisions will continue in full force and effect.</p>
+        </div>
+
+        <div class="terms-divider"></div>
+
+        <!-- 12. Contact -->
+        <div class="terms-section" id="contact">
+          <div class="terms-section-num">Section 12</div>
+          <h2>Contact</h2>
+          <p>If you have any questions, concerns, or complaints about these Terms and Conditions or the Service, please get in touch.</p>
+        </div>
+
+        <!-- Contact card -->
+        <div class="contact-card">
+          <h3>Get in touch</h3>
+          <p>Questions about these terms or how LegalEase works? We're happy to help.</p>
+          <a href="mailto:hello@legalease.app">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M1 5l6 4 6-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Contact Jonas
+          </a>
+        </div>
+
+        <button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+          ↑ Back to top
+        </button>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">Legal<span>Ease</span></div>
+      <p class="footer-note">© 2025 Jonas Mukendenge · LegalEase · Zambia · Not legal advice</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Highlight active TOC item on scroll */
+window.addEventListener('scroll', () => {
+  const sections = document.querySelectorAll('.terms-section');
+  const tocItems = document.querySelectorAll('.toc-item');
+  let current = '';
+
+  sections.forEach(section => {
+    if (window.scrollY >= section.offsetTop - 120) {
+      current = section.id;
+    }
+  });
+
+  tocItems.forEach(item => {
+    item.classList.remove('active');
+    if (item.getAttribute('href') === '#' + current) {
+      item.classList.add('active');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
